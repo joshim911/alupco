@@ -1,0 +1,3 @@
+# ignroe the libraries inside libs directory
+
+/libs/vendor

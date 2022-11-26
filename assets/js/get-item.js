@@ -1,29 +1,40 @@
 function get_items(){
-    let code = jQuery("#gi_alupco_code").val();
-    let house = jQuery( "#where_house" ).val();
-    let item_name = jQuery( "#item_name" ).val();
-    console.log(item_name);
+    let code = jQuery("#alupco_code_src").val();
+    let house = jQuery( "#wh-house_src" ).val();
+    let item_name = jQuery( "#item_name_src" ).val();
+
+    console.log(code);
     console.log(house);
+    console.log(item_name);
+
         jQuery.ajax({
             type: "GET",
             url: gspdata.admin_url,
             data: {
                 'action': 'get_items',
                 'nonce': gspdata.nonce,
-                'wherehouse': house,
+                'wharehouse': house,
                 'alp_code': code,
                 'item_name': item_name
             },
             success: function (response) {
                 jQuery("#show_items").html('');
                 showItem(response);
-            }
+                console.log( typeof( response) );
+            },
+            error: function (xhr, ajaxOptions, Error) {
+                jQuery("#show_items").html('');
+                console.log(xhr);
+                console.log(ajaxOptions);
+                console.log(Error);
+            },
         });
 
 }
 
-jQuery("#gi_submit").click(function(){
+jQuery("#item_src_btn").click(function(){
     get_items();
+    console.log("item search btn clicked");
 });
 
 function showItem( data = {} ){
@@ -47,8 +58,8 @@ function showItem( data = {} ){
         }
 
 
-        if ( items[i].quantity ) {
-            text += `<span class="title">Total Quantity: </span>`+items[i].quantity+`</br>`;
+        if ( items[i].total_quantity ) {
+            text += `<span class="title">Total Quantity: </span>`+items[i].total_quantity+`</br>`;
         }
 
         if ( items[i].quantity_type ) {
