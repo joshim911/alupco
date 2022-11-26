@@ -4,24 +4,18 @@ global $items;
 ?>
  <main class="container">
  	<h2>Search Items</h2>
-	<div class="form-group">
-		<select id="where_house">
-			<option value="" default>Select Wh/House</option>
-			<option value="company-12">Wh/House 12</option>
-			<option value="company-13">Wh/House 13</option>
-		</select>
-		<select id="item_name">
-			<option value="" default>Select Item by name</option>
-			<option value="gesket">Gesket</option>
-			<option value="13">Scrow</option>
-		</select>
-	</div>
+
+	<?php
+		do_action( 'get_wharehouse_and_item_name' );
+	?>
+	
 	<div class="form-group my-3">
-	  <label for="gi_alupco_code"><b>Alupco Code:</b></label>
-	  <input type="text" name="" id="gi_alupco_code" class="form-control" placeholder="" aria-describedby="helpId">
+	  <label for="alupco_code_src"><b>Alupco Code:</b></label>
+	  <input type="text" name="" id="alupco_code_src" class="form-control" placeholder="Search Item by Alupco Code" aria-describedby="helpId">
 	</div>
 	<div class="form-group">
-		<input type="button" id="gi_submit" class="btn btn-primary" value="Submit"/>
+		<!-- item_src means search the item by code  -->
+		<input type="button" id="item_src_btn" class="btn btn-primary" value="Submit"/>
 	</div>
 <?php 
 	$result = apply_filters( 'gsp_get_results', [], array() ); 
