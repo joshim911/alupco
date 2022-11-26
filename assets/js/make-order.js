@@ -33,26 +33,115 @@ function remove_order_fields ( field_no ){
 }
 
 //  order submittion
- 
-const orderMakerDetails = [];
+
 
 jQuery("#order_maker_submit").click( function (){
-    
-    let fileds = document.getElementsByClassName( "order_maker_field" );
-    let code = document.getElementsByClassName( "order-maker-code" );
-    let qty = document.getElementsByClassName( "order-maker-qty" );
-
-    for (let i = 0; i < fileds.length; i++) {
-        const element = fileds[i];
-        
+    let house = jQuery("#make_order_company_name" ).val();
+    let orderID = jQuery("#order_making_id" ).val();
+    let newOrderID = jQuery("#new_order_making_id" ).val();
+    let itemCode = jQuery("#order_item_code" ).val();
+    let itemQty = jQuery("#order_item_qty" ).val();
+    let dcnote;
+   
+    if( orderID != '' ){
+        dcnote = orderID;
+    }else{
+        dcnote = newOrderID;
     }
+
+    if ( house == '' || dcnote == '' || itemCode == '' || itemQty == '' ) {
+        return console.log("Please field the form in the right data");
+    }
+
+
+    jQuery.ajax({
+        type: "GET",
+        url: gspdata.admin_url,
+        data: {
+            'action': 'make_order',
+            'nonce': gspdata.nonce,
+            'order_id': dcnote,
+            'wharehouse': house,
+            'alp_code': itemCode,
+            'item_qty': itemQty
+        },
+        success: function (response) {
+            
+            console.log(  response );
+        },
+        error: function (xhr, ajaxOptions, Error) {
+            
+            console.log(xhr);
+            console.log(ajaxOptions);
+            console.log(Error);
+        },
+    });
 
 } );
 
 
-function ordeMakerInfo ( code , qty ){
-    orderMakerDetails.push({
-        "code":code,
-        "qty":qty
-    });
-}
+// let orderMakerDetails = new Object();
+ 
+// if ( localStorage.getItem( 'order-info' ) != null ) {
+//     orderMakerDetails = localStorage.getItem( 'order-info' );  
+// }
+
+
+// function ordeMakerInfo ( code , qty ){
+
+//     let keyName; let lenNo;
+
+//     if( code == '' || qty == '' ){
+
+//         console.log("code or qty is null");
+//         return;
+//     }
+
+//     if ( orderMakerDetails != null ) {
+        
+//         lenNo = Object.keys( orderMakerDetails ).length + 1 ;
+//         keyName = 'length_'+lenNo;
+
+//         setObj( keyName, code, qty )
+        
+
+//         console.log( "done obj" );
+
+//     }else{
+
+//         orderMakerDetails =  {
+//             "length_1" : {
+//                 "code":code,
+//                 "qty":qty
+//             }  
+//         };
+
+//         console.log( "not yet store any order" );
+//     }
+
+//     localStorage.setItem( 'order-info',  orderMakerDetails );
+
+// }
+
+// let localdata = localStorage.getItem( 'order-info' );
+//  console.log( JSON.stringify(localdata) );
+
+//  function setObj( keyName, code, qty ){
+
+//     orderMakerDetails =  {
+//         "key2" : {
+//             "code":code,
+//             "qty":qty
+//         }  
+//     };
+//  }
+
+
+// localStorage.removeItem('order-info');
+
+// localStorage.removeItem('order-info2');
+// localStorage.removeItem('order-info3');
+
+// localStorage.removeItem('order-info4');
+
+// localStorage.removeItem('order-info5');

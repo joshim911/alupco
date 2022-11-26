@@ -5,8 +5,16 @@ global $items;
  <main class="container">
  	<h2>Search Items</h2>
 
+	<div class="form-group">
+		<select id="wh_house_src" class="form-control"> 
+			<?php  
+			do_action( 'get_wharehouse_name' );
+			?>
+		</select>
+	</div>
 	<?php
-		do_action( 'get_wharehouse_and_item_name' );
+		
+		do_action( 'get_items_name' );
 	?>
 	
 	<div class="form-group my-3">

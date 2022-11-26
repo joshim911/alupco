@@ -79,7 +79,8 @@ global $wpdb;
     require_once __DIR__ . '/inc/item-edit.php';
     require_once __DIR__ . '/inc/uncompleted-items.php';
     require_once __DIR__ . '/inc/get-item-and-wharehouse-name.php';
+    require_once __DIR__ . '/inc/make-order.php';
 
     
-    add_action( 'get_wharehouse_and_item_name', 'get_wharehouse_and_item_name' );
-    
+    add_action( 'get_wharehouse_name', 'get_wharehouse_name' );
+    add_action( 'get_items_name', 'get_items_name' );

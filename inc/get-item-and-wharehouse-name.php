@@ -1,33 +1,24 @@
 <?php
 
 
-function get_wharehouse_and_item_name (){
+function get_wharehouse_name (){
 
     global $wpdb;
 
-    $items = $wpdb->get_results( "select * from get_item_name" );
-    $wharehouses = $wpdb->get_results( "select * from get_wharehouse_name" );
+    $wharehouses = $wpdb->get_results( "select * from get_company_name" );
     
-    ?>
-        <div class="form-group">
-    <?php
+   
 
     if(  $wharehouses ){
         ?>
-        
-		<select id="wh-house_src">
-		<option value="" default>Select an WH/House</option>
-    <?php
+        <option value=""><?php echo "Select the WH/House" ?></option>
+        <?php
 
         foreach( $wharehouses as   $wharehouse ){
             ?>
-            <option value="<?php echo $wharehouse->wharehouse_name ?>"><?php echo $wharehouse->wharehouse_name ?></option>
+            <option value="<?php echo $wharehouse->company_name ?>"><?php echo $wharehouse->company_name ?></option>
             <?php
         }
-
-        ?>
-        </select>
-    <?php
 
     }else{
         ?>
@@ -35,30 +26,40 @@ function get_wharehouse_and_item_name (){
         <?php
     }
 
+}
+
+
+function get_items_name(){
+
+    global $wpdb;
+
+    $items = $wpdb->get_results( "select * from get_item_name" );
+ 
     if( $items ){
-    ?>
-		<select id="item_name_src">
-        <option value="" default>Select Item by name</option>
-    <?php
-            foreach( $items as   $item ){
-                ?>
-                <option value="<?php echo $item->item_name ?>"><?php echo $item->item_name ?></option>
-                <?php
-            }
-    ?>
-     </select>
-	
-    <?php
-    }else{
         ?>
-            <p class="text-danger">No Item Name exists</p>
+        <div class="form-group">
+            <select id="item_name_src">
+            <option value="" default>Select Item by name</option>
         <?php
-    }
-
-    ?>
+                foreach( $items as   $item ){
+                    ?>
+                    <option value="<?php echo $item->item_name ?>"><?php echo $item->item_name ?></option>
+                    <?php
+                }
+        ?>
+         </select>
+        
+        <?php
+        }else{
+            ?>
+                <p class="text-danger">No Item Name exists</p>
+            <?php
+        }
     
-    </div>
-
-    <?php
-
+        ?>
+        
+        </div>
+    
+        <?php
+       
 }
