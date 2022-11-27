@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 27, 2022 at 03:07 PM
+-- Generation Time: Nov 27, 2022 at 08:15 PM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 7.4.30
 
@@ -65,9 +65,6 @@ CREATE TABLE `make_order` (
   `id` int(11) NOT NULL,
   `data` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`data`)),
   `order_id` varchar(50) NOT NULL,
-  `company_name` varchar(50) DEFAULT NULL,
-  `item_code` varchar(50) DEFAULT NULL,
-  `item_qty` varchar(50) DEFAULT NULL,
   `order_status` int(2) DEFAULT 0,
   `date` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -76,10 +73,9 @@ CREATE TABLE `make_order` (
 -- Dumping data for table `make_order`
 --
 
-INSERT INTO `make_order` (`id`, `data`, `order_id`, `company_name`, `item_code`, `item_qty`, `order_status`, `date`) VALUES
-(7, '[{\"order_id\":\"order-1\",\"company_name\":\"company-11\",\"item_code\":\"sd\",\"item_qty\":\"1\"}]', 'order-1', NULL, NULL, NULL, 0, '2022-11-27 16:38:11'),
-(8, '[{\"id\":\"7\",\"data\":\"[{\\\"order_id\\\":\\\"order-1\\\",\\\"company_name\\\":\\\"company-11\\\",\\\"item_code\\\":\\\"sd\\\",\\\"item_qty\\\":\\\"1\\\"}]\",\"order_id\":\"order-1\",\"company_name\":null,\"item_code\":null,\"item_qty\":null,\"order_status\":\"0\",\"date\":\"2022-11-27 16:38:11\"},{\"order_id\":\"order-1\",\"company_name\":\"company-11\",\"item_code\":\"sd\",\"item_qty\":\"2\"}]', 'order-2', NULL, NULL, NULL, 0, '2022-11-27 16:38:35'),
-(9, '[{\"id\":\"8\",\"data\":\"[{\\\"id\\\":\\\"7\\\",\\\"data\\\":\\\"[{\\\\\\\"order_id\\\\\\\":\\\\\\\"order-1\\\\\\\",\\\\\\\"company_name\\\\\\\":\\\\\\\"company-11\\\\\\\",\\\\\\\"item_code\\\\\\\":\\\\\\\"sd\\\\\\\",\\\\\\\"item_qty\\\\\\\":\\\\\\\"1\\\\\\\"}]\\\",\\\"order_id\\\":\\\"order-1\\\",\\\"company_name\\\":null,\\\"item_code\\\":null,\\\"item_qty\\\":null,\\\"order_status\\\":\\\"0\\\",\\\"date\\\":\\\"2022-11-27 16:38:11\\\"},{\\\"order_id\\\":\\\"order-1\\\",\\\"company_name\\\":\\\"company-11\\\",\\\"item_code\\\":\\\"sd\\\",\\\"item_qty\\\":\\\"2\\\"}]\",\"order_id\":\"order-2\",\"company_name\":null,\"item_code\":null,\"item_qty\":null,\"order_status\":\"0\",\"date\":\"2022-11-27 16:38:35\"},{\"order_id\":\"order-2\",\"company_name\":\"company-11\",\"item_code\":\"sd\",\"item_qty\":\"3\"}]', 'order-3', NULL, NULL, NULL, 0, '2022-11-27 16:40:07');
+INSERT INTO `make_order` (`id`, `data`, `order_id`, `order_status`, `date`) VALUES
+(5, '[{\"order_id\":\"order-1\",\"company_name\":\"company-11\",\"item_code\":\"al code\",\"item_qty\":\"1\"}]', 'order-1', 0, '2022-11-27 10:19:49'),
+(6, '[{\"order_id\":\"order-2\",\"company_name\":\"company-11\",\"item_code\":\"al code\",\"item_qty\":\"2\"}]', 'order-2', 0, '2022-11-27 10:20:50');
 
 -- --------------------------------------------------------
 
@@ -171,7 +167,7 @@ ALTER TABLE `get_item_name`
 -- AUTO_INCREMENT for table `make_order`
 --
 ALTER TABLE `make_order`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `stock_manage`

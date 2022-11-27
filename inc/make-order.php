@@ -44,12 +44,11 @@ add_action( 'wp_ajax_make_order', function( $request = false ){
 
     if( $getOrder ){
 
-      
-      // array_push( $getOrder,  $data  );
+      $newdata = json_decode($getOrder[0]->data);
 
-      return wp_send_json_error( $getOrder[0]->data );
-    
-      // submit_order ( $wpdb, $getOrder, $dcnote, $wh_house, $alp_code, $qty );
+      // echo var_dump( $newdata ); exit;
+
+      update_submittion_order( $wpdb, [ $newdata[0], $data ], $dcnote );
 
     }else{
 
@@ -77,4 +76,14 @@ function submit_order ( $db, $data = array(), $id, $company, $code, $qty ){
       echo wp_send_json_error("order did make");
 
     }
+}
+
+function update_submittion_order( $wpdb, $data = [], $id ){
+  $wpdb->update( 'make_order', 
+  array(
+    'data' => json_encode( $data )
+  ),
+  array(
+    'order_id' => $id
+  ) );
 }

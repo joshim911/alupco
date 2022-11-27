@@ -1,41 +1,6 @@
 
 
-// let counter_order_field = 0;
-// let code = jQuery(".order-maker-code").val();
-// let qty = jQuery(".order-maker-qty").val();
-
-
-// jQuery("#order_maker_field").click( function () {
-//     counter_order_field += 1;
-//     let form = jQuery("#order_maker_form");
-
-     
-//         form.append(`<section class="order_maker_field card p-2 mb-2" id="order-field-id-`+counter_order_field+`">
-//     <div class="form-group mb-2">
-//         <div class="d-flex justify-content-between">
-//         <label class="">Item Code</label>
-//         <label class="text-danger" onclick="remove_order_fields(`+counter_order_field+`)">Remove Field</label>
-//         </div>
-//         <input type="text" class="form-control order-maker-code" id="formGroupExampleInput" placeholder="Type Code">
-//     </div>
-//     <div class="form-group mb-2">
-//         <label for="formGroupExampleInput2">Item Quantity</label>
-//         <input type="text" class="form-control order-maker-qty" id="formGroupExampleInput2" placeholder="Type Quantity">
-//     </div>
-// </section>`);
-    // console.log(counter_order_field)
-    
-// } );
-
-// function remove_order_fields ( field_no ){
-//     let parant = document.getElementById( "order_maker_form" );
-//     let child = document.getElementById( "order-field-id-" + field_no);
-//     parant.removeChild( child );
-// }
-
 //  order submittion
-
-
 jQuery("#order_maker_submit").click( function (){
     let house = jQuery("#make_order_company_name" ).val();
     let orderID = jQuery("#order_making_id" ).val();
@@ -68,7 +33,7 @@ jQuery("#order_maker_submit").click( function (){
         },
         success: function (response) {
             
-            console.log(  JSON.parse(response.data) );
+            console.log( response );
         },
         error: function (xhr, ajaxOptions, Error) {
             
@@ -82,69 +47,66 @@ jQuery("#order_maker_submit").click( function (){
 
 } );
 
+// show pending orders
 
-// let orderMakerDetails = new Object();
- 
-// if ( localStorage.getItem( 'order-info' ) != null ) {
-//     orderMakerDetails = localStorage.getItem( 'order-info' );  
-// }
+function show_pending_orders(){
+
+    jQuery.ajax({
+        type: 'GET',
+        url: gspdata.admin_url,
+        data: {
+            'action': 'show_pending_order',
+            'nonce': gspdata.nonce,
+        },
+        success: function ( response ) {
+
+            if (response.success) {
+                render_pending_orders( response.data );
+            } else {
+                console.log(  response );                
+            }
+
+        },
+        error: function ( xhr, otion, error ){
+            console.log(xhr);
+            console.log(otion);
+            console.log(error);
+        }
 
 
-// function ordeMakerInfo ( code , qty ){
+    });
 
-//     let keyName; let lenNo;
+}
 
-//     if( code == '' || qty == '' ){
+show_pending_orders();
 
-//         console.log("code or qty is null");
-//         return;
-//     }
+// render_pending_orders will take an array as a parameters
+function render_pending_orders( data ){
+    const section = jQuery("#render_pending_orders");
+    
+    console.log( data );
 
-//     if ( orderMakerDetails != null ) {
+    for (let i = 0; i < data.length; i++) {
+
+        const card = document.createElement('div');
+        let code = document.createElement('p');
+        let qty = document.createElement('p')
+        card.setAttribute( 'class', 'card my-2 p-2' );
+
+        let jsondata = JSON.parse( data[i].data );
+
+        card.append("<p>" + jsondata[0].item_code + "</p>" );
+        card.append( jsondata[0].item_qty );
+
+        section.append( card );
         
-//         lenNo = Object.keys( orderMakerDetails ).length + 1 ;
-//         keyName = 'length_'+lenNo;
-
-//         setObj( keyName, code, qty )
+         console.log( jsondata[0].order_id );
+         console.log( jsondata[0].company_name );
+         console.log( jsondata[0].item_code );
+         console.log( jsondata[0].item_qty );
+         console.log( "---- end ----" );
         
+    }
 
-//         console.log( "done obj" );
-
-//     }else{
-
-//         orderMakerDetails =  {
-//             "length_1" : {
-//                 "code":code,
-//                 "qty":qty
-//             }  
-//         };
-
-//         console.log( "not yet store any order" );
-//     }
-
-//     localStorage.setItem( 'order-info',  orderMakerDetails );
-
-// }
-
-// let localdata = localStorage.getItem( 'order-info' );
-//  console.log( JSON.stringify(localdata) );
-
-//  function setObj( keyName, code, qty ){
-
-//     orderMakerDetails =  {
-//         "key2" : {
-//             "code":code,
-//             "qty":qty
-//         }  
-//     };
-//  }
-
-
-// localStorage.removeItem('order-info');
-
-// localStorage.removeItem('order-info2');
-// localStorage.removeItem('order-info3');
-
-// localStorage.removeItem('order-info4');
-
-// localStorage.removeItem('order-info5');
+    
+}
