@@ -1,10 +1,11 @@
 
 
-<section id="order_section">
+<section class="container" id="order_section">
 <h3 class="text-center">Make Order!</h3>
 
-<h5>Select the WH/House</h5>
+
    <div class="form-group mb-3">
+   <label>Select the WH/House</label>
     <select id="make_order_company_name" class="form-control">
         <?php
         do_action( 'get_wharehouse_name' );
@@ -12,8 +13,8 @@
     </select>
    </div>
    
-    <h5>Order ID</h5>
     <div class="form-group mb-2">
+        <label>Order ID</label>
         <select id="order_making_id" class="form-control">
             <option value="" selected>Select order ID</option>
         </select>
@@ -43,12 +44,13 @@
 
     <div class="form-group">
         <button class="btn btn-primary" id="order_maker_submit">Submit Order</button>
-        <button class="btn btn-success mx-2" id="order_maker_field">Add Field</button>
+        <!-- <button class="btn btn-success mx-2" id="test_order">Add Field</button> -->
     </div>
 
 
     <section id="show_pending_orders" class="my-3">
         <h3>All Pending Order</h3>
+        
     </section>
 
 </section>

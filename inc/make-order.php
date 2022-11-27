@@ -32,18 +32,49 @@ add_action( 'wp_ajax_make_order', function( $request = false ){
 
     }
 
-    $data = array(
+    $data = (object) [
         'order_id' => $dcnote,
         'company_name' => $wh_house,
         'item_code'  => $alp_code,
         'item_qty' => $qty
-    );
+    ];
     
-    if( $wpdb->insert( 'make_order', $data ) ){
-     echo wp_send_json_success("order made"); 
+
+    $getOrder = $wpdb->get_results( "select * from make_order where order_id='$dcnote' " );
+
+    if( $getOrder ){
+
+      
+      // array_push( $getOrder,  $data  );
+
+      return wp_send_json_error( $getOrder[0]->data );
+    
+      // submit_order ( $wpdb, $getOrder, $dcnote, $wh_house, $alp_code, $qty );
+
     }else{
-      echo wp_send_json_error("order did make");
+
+      submit_order ( $wpdb, [$data], $dcnote, $wh_house, $alp_code, $qty );
+      echo wp_send_json_error("no order exists");
+
     }
        
 
 } );
+
+
+function submit_order ( $db, $data = array(), $id, $company, $code, $qty ){
+
+    if( $db->insert( 'make_order', [
+        'data' => json_encode($data),
+        'order_id' => $id
+      
+    ] ) ) {
+
+      echo wp_send_json_success( "order made" ); 
+
+    }else{
+
+      echo wp_send_json_error("order did make");
+
+    }
+}

@@ -2,11 +2,11 @@
 global $items;
 
 ?>
- <main class="container">
+ <main class="container my-3">
  	<h2>Search Items</h2>
 
 	<div class="form-group">
-		<select id="wh_house_src" class="form-control"> 
+		<select id="company_src" class="form-control"> 
 			<?php  
 			do_action( 'get_wharehouse_name' );
 			?>
@@ -23,7 +23,7 @@ global $items;
 	</div>
 	<div class="form-group">
 		<!-- item_src means search the item by code  -->
-		<input type="button" id="item_src_btn" class="btn btn-primary" value="Submit"/>
+		<input type="button" id="item_src_btn" class="btn btn-primary" value="Submit"/> <b id="search-item-loading-icon" class="mx-3 d-none text-danger">Loading...</b>
 	</div>
 <?php 
 	$result = apply_filters( 'gsp_get_results', [], array() ); 

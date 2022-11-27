@@ -7,17 +7,30 @@
 
         <?php
             
-            // this is for QR-Code
-            // require_once __DIR__ . '/template-parts/qrcode-header.php';
 
-            require_once __DIR__ . '/template-parts/make-order.php';   
+            /**
+             * for making order as if it can store the data for making panding order
+             */
+            require_once __DIR__ . '/templates/make-order.php';   
 
-            require_once __DIR__ . '/page-insert-item.php';
+            
+            /**
+             * Insert or Upload new Items using form or by uploading excell-sheet
+             */
+            // require_once __DIR__ . '/templates/insert-item.php';
 
-            // require_once __DIR__ . '/page-edit-item.php';
 
+            /**
+             * Update or edit for stock-manage 
+             */
+            // require_once __DIR__ . '/templates/update-stock-manage.php';
+           
 
-            require_once __DIR__ . '/find-item-by-page.php';
+            /**
+             * Search Item by wharehouse or item-name or item-code
+             * this section is complate
+             */
+            // require_once __DIR__ . '/templates/search-item.php';
         ?>
 
     </main>
