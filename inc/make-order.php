@@ -44,11 +44,19 @@ add_action( 'wp_ajax_make_order', function( $request = false ){
 
     if( $getOrder ){
 
-      $newdata = json_decode($getOrder[0]->data);
+      // $newdata = json_decode($getOrder[1]->data);
 
-      // echo var_dump( $newdata ); exit;
+      // $arrayData = [ $newdata[0] ];
 
-      update_submittion_order( $wpdb, [ $newdata[0], $data ], $dcnote );
+      $newData = json_decode($getOrder[0]->data);
+
+      array_push( $newData ,  $data );
+
+     
+
+      // echo var_dump( $jd ); exit;
+
+      update_submittion_order( $wpdb, $newData, $dcnote );
 
     }else{
 

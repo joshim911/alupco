@@ -49,9 +49,9 @@
 
 
     <section id="show_pending_orders" class="my-3">
-        <h3>All Pending Order</h3>
+    <h3 id="pending_order_title">NO PENDING ORDER!</h3>
         <section id="render_pending_orders">
-
+        
         </section>
     </section>
 
