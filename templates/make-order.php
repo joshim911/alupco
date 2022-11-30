@@ -56,3 +56,29 @@
     </section>
 
 </section>
+
+<!-- edit pending order -->
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#active_edit_order_modal">
+  Launch demo modal
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="active_edit_order_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="edit_pending_order_title">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="edit_pending_order_body">
+        Loading...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="save_pending_order_items">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>

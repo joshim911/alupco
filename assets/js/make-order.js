@@ -5,7 +5,9 @@ class Show_pending_orders
 
         this.fetch_data();
         this.data = {};
+        this.rowID;
         this.orderID = 1;
+        this.company;
         this.tableNo;
         
     }
@@ -46,8 +48,8 @@ class Show_pending_orders
             </p>
             <p class"">
             <b class="mx-2">W/H-House: `+company_name+`</b>
-            <b class="mx-2 text-success" onclick="confirm_order('`+ orderID +`')">Confirm</b>
-            <b class="mx-2 text-warning" onclick="edit_order('`+ orderID +`')">Edit</b>
+            <b class="mx-2 text-success" onclick="confirm_order('`+ orderID +`')" >Confirm</b>
+            <b class="mx-2 text-warning" onclick="edit_order('`+ data[i].id +`')" data-bs-toggle="modal" data-bs-target="#active_edit_order_modal">Edit</b>
             <b class="mx-2 text-danger" onclick="delete_order('`+ orderID +`')">Delete</b>
             </p>
             </div>
@@ -119,7 +121,7 @@ class Show_pending_orders
     
                 if (response.success) {
                     
-                    ShowPendingOrders.render_pending_orders( response.data );
+                    ShowPendingOrders.render_pending_orders(  response.data );
                     
                 } else {
                     console.log(  response );                
@@ -145,7 +147,7 @@ class Show_pending_orders
 
 function confirm_order( order_id ){
     console.log( "confirm order -> order_id "+order_id );
-    jQuery("#order_maker_submit").
+    jQuery("#order_maker_submit");
     jQuery.ajax({
         type:"GET",
         url: gspdata.admin_url,
@@ -179,8 +181,23 @@ function confirm_order( order_id ){
     });
 }
 
-function edit_order( order_id ){
-    console.log( "Edit order order -> id "+order_id );
+function edit_order( rowID ){
+
+    ShowPendingOrders.rowID = rowID;
+
+    jQuery.ajax({
+        type:"GET",
+        url:gspdata.admin_url,
+        data:{
+            "action":"edit_pending_order",
+            "row_id":rowID
+        },
+        success:function ( response ) {
+           
+            render_edit_order_items( response );
+        }
+    });
+
 }
 
 function delete_order( order_id ){
@@ -196,6 +213,7 @@ function delete_order( order_id ){
         success: function ( response ) {
             if (response.success) {
                 jQuery("#render_pending_orders").html(' ');
+                jQuery("#pending_order_title").html( "NO PENDING ORDER!");
                 new Show_pending_orders();
 
             } else {
@@ -263,53 +281,104 @@ jQuery("#order_maker_submit").click( function (){
 
 
 
+function render_edit_order_items ( ajax_data ) {
 
-// old code for show_pending_orders
-// console.log( data );
-   
-// const section = jQuery("#render_pending_orders");
-// let orderID = 'd';
-// let sl;
-
-// for (let i = 0; i < data.length; i++) {
+    console.log(ajax_data);
     
-//     const card = document.createElement('div');
-//     card.setAttribute( 'class', 'card my-2 p-2' );
-
-//     let jsondata = JSON.parse( data[i].data );
-
+    let itemsBody = jQuery("#edit_pending_order_body");
     
+    itemsBody.html( " " ); 
+    let data = JSON.parse( ajax_data.data.data );
+    let order_id = ajax_data.data.order_id;
+    ShowPendingOrders.company = data[0].company_name;
 
-//     table  = `<p class="text-center">
-//     <b>`+orderID+`</b>
-//     </p><table class="table">
-//     <thead>
-//     <tr>
-//         <th scope="col">#</th>
-//         <th scope="col">Item-Code</th>
-//         <th scope="col">Quantity</th>
-//     </tr>
-// </thead>
-// <tbody>`;
+    jQuery("#edit_pending_order_title").html("Sales Quotation or DC-Note: # "+order_id);
+
+    itemsBody.append(`
+    <div class="form-group mb-3">
+            <label>Change Sales Quotation:</label>
+            <input type="text" placeholder="Type Sales Quotation Here" id="order_id_pending_order" class="form-control" value="`+order_id+`" />
+        </div>`);
+let no = 1;
+    for (let i = 0; i < data.length; i++) {
+       
+        itemsBody.append( `
+        <div id="pending_order_editing_field-`+no+`" class="card my-3 p-2">
+            <div class="form-group">
+                <div class="d-flex justify-content-between">
+                <label>#`+no+` Item-Code:</label>
+                <label class="text-danger mx-2" onclick="delete_pending_order_editing_field(`+no+`)">X</label>
+                </div>
+                <input type="text" placeholder="type the item code" class="form-control peding-order-items-code" value="`+data[i].item_code+`" />
+            </div>
+            <div class="form-group mb-3">
+                <label>Item-Code:</label>
+                <input type="number" placeholder="type the item quantity" class="form-control peding-order-items-qty" value="`+data[i].item_qty+`" />
+            </div>
+        </div>
+        `);
+
+        no +=1;
+    }
+
+}
 
 
-// orderID = jsondata[i].order_id;
-//     for (let ii = 0; ii < jsondata.length; ii++) {
+jQuery("#save_pending_order_items").click( function () {
 
-//         if( jsondata.length > 1 ){
-//             sl =1+ii;
-//         }else{
-//             sl = 1;
-//         }
+    const items = [];
 
-        
+    let codes = document.getElementsByClassName("peding-order-items-code");
+    let qty = document.getElementsByClassName("peding-order-items-qty");
+    let id = document.getElementById("order_id_pending_order").value;
+    id = id.toUpperCase();
+    ShowPendingOrders.orderID = id;
+    for (let i = 0; i < codes.length; i++) {
+        console.log( codes[i].value ); 
+        items.push( save_pending_order_items( 
+            ShowPendingOrders.orderID, ShowPendingOrders.company,
+             codes[i].value, qty[i].value 
+             ) );
+    }
 
-//         table = table + render_elements_for_pending_orders( sl, jsondata[ii].item_code, jsondata[ii].item_qty );
-        
-//     }
-  
-//     card.innerHTML =  table + ` </tbody></table>`;
+    update_pending_order_items(items)
 
-//     section.append( card );
-    
-// }
+} );
+
+function save_pending_order_items( order_id, company, code, qty ){
+    return {
+        "order_id": order_id,
+        "company_name":company,
+        "item_code":code,
+        "item_qty":qty
+    };
+}
+
+function update_pending_order_items(data){
+
+    jQuery.ajax({
+        type:"GET",
+        url:gspdata.admin_url,
+        data:{
+            "action":"update_pending_order_items",
+            "data": data,
+            "order_id":ShowPendingOrders.orderID,
+            "row_id":ShowPendingOrders.rowID
+        },
+        success: function ( response ){
+            console.log(response);
+            location.reload();
+        }
+
+    });
+
+}
+
+function delete_pending_order_editing_field(no){
+
+    let child = document.getElementById("pending_order_editing_field-"+no);
+    let parant = document.getElementById("edit_pending_order_body");
+
+    parant.removeChild(child);
+
+}
