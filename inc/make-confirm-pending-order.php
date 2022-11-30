@@ -13,31 +13,41 @@ add_action( 'wp_ajax_make_confirm_order', function (){
         $code = $item[0]->item_code; $qty = $item[0]->item_qty;
 
         // get previous quantity from stock-manage table
-        $total_qty = $wpdb->get_var(" select total_quantity from stock_manage where alupco_code = '$code' ");
+        $item = $wpdb->get_row(" select * from stock_manage where alupco_code = '$code' ");
 
-        if ($total_qty) {
+        if ($item) {
 
-            $updateTotalQty = $total_qty - $qty;
+            $total_previous_qty = (int) $item->total_quantity;
+
+            $updateTotalQty = $total_previous_qty - $qty;
         
+            // echo var_dump($item);
+            // echo var_dump($total_previous_qty);
+            // echo var_dump($updateTotalQty); exit; 
             // update the partial quantity
-           $updated = $wpdb->update('stock_manage', array( 'total_quantity' => $updateTotalQty ), array( 'alupco_code' => $code ) );
+           $wpdb->update('stock_manage', array( 'total_quantity' => $updateTotalQty , 'partial_quantity' => $updateTotalQty ), array( 'alupco_code' => $code ) );
+   
+            $wpdb->update('make_order', array( 'order_status' => 1 ), array( 'order_id' => $id ) );
 
-          if ($updated = false ){
-            
-             $wpdb->update('make_order', array( 'order_status' => 1 ), array( 'order_id' => $id ) );
+            $salesHisotryMade = array(
+                'order_id' => $id,
+                'alupco_code' => $code,
+                'item_description' => $item->item_description,
+                'item_unit'  =>  $item->unit,
+                'item_quantity' => $qty,
+                'item_previous_quantity' => $total_previous_qty,
+            );
 
-             return wp_send_json_success("order has been confirmed");
+            if( $wpdb->insert( 'sales_history', $salesHisotryMade ) ){
+                return wp_send_json_success("Order has been released");
+            }else{
+                return wp_send_json_error("Order hisotry did not made, maybe something went wrong.");
+            }
 
-          }else{
-            return wp_send_json_error( "Stock did not update" );
-          }
-            
+
         }else{
-            return wp_send_json_error( "did not confirm the pending order" );
+            return wp_send_json_error("no data found");
         }
-       
-    }else{
-        return wp_send_json_error("no data found");
     }
 
 });

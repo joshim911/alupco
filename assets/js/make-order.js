@@ -139,13 +139,13 @@ class Show_pending_orders
     
 
 }
-console.log(gspdata.admin_url)
+
  const ShowPendingOrders = new Show_pending_orders();
 
 
 function confirm_order( order_id ){
     console.log( "confirm order -> order_id "+order_id );
-
+    jQuery("#order_maker_submit").
     jQuery.ajax({
         type:"GET",
         url: gspdata.admin_url,
@@ -158,6 +158,10 @@ function confirm_order( order_id ){
         success: function (response){
 
             if ( response.success ) {
+
+                jQuery("#render_pending_orders").html(' ');
+                jQuery("#pending_order_title").html( "NO PENDING ORDER!");
+
                 new Show_pending_orders();
             }
 
@@ -253,6 +257,7 @@ jQuery("#order_maker_submit").click( function (){
             console.log(Error);
         },
     });
+
 
 } );
 

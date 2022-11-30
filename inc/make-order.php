@@ -52,8 +52,6 @@ add_action( 'wp_ajax_make_order', function( $request = false ){
 
       array_push( $newData ,  $data );
 
-     
-
       // echo var_dump( $jd ); exit;
 
       update_submittion_order( $wpdb, $newData, $dcnote );
@@ -61,7 +59,7 @@ add_action( 'wp_ajax_make_order', function( $request = false ){
     }else{
 
       submit_order ( $wpdb, [$data], $dcnote, $wh_house, $alp_code, $qty );
-      echo wp_send_json_error("no order exists");
+      
 
     }
        
