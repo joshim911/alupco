@@ -139,12 +139,40 @@ class Show_pending_orders
     
 
 }
-
+console.log(gspdata.admin_url)
  const ShowPendingOrders = new Show_pending_orders();
 
 
 function confirm_order( order_id ){
     console.log( "confirm order -> order_id "+order_id );
+
+    jQuery.ajax({
+        type:"GET",
+        url: gspdata.admin_url,
+        data: {
+            "action":"make_confirm_order",
+            "nonce": gspdata.nonce,
+            "order_id":order_id
+            
+        },
+        success: function (response){
+
+            if ( response.success ) {
+                new Show_pending_orders();
+            }
+
+            console.log(response);
+            
+        },
+        error: function( xhr, otion, error ){
+            console.log(xhr);
+            console.log(otion);
+            console.log(error);
+        }
+
+
+
+    });
 }
 
 function edit_order( order_id ){
@@ -227,6 +255,9 @@ jQuery("#order_maker_submit").click( function (){
     });
 
 } );
+
+
+
 
 // old code for show_pending_orders
 // console.log( data );

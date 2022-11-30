@@ -71,6 +71,25 @@ add_action( 'wp_ajax_make_order', function( $request = false ){
 
 function submit_order ( $db, $data = array(), $id, $company, $code, $qty ){
 
+  $total_quantity = $db->get_var( "select total_quantity from stock_manage where alupco_code = '$code' " );
+
+    if( $total_quantity >  $qty ){
+
+      $partialQty = $total_quantity - $qty;
+      
+      $db->update( "stock_manage", array( 'partial_quantity' => $partialQty ), array( 'alupco_code' => $code ) );
+
+    }else{
+
+      if( ! $total_quantity > 0 ) {
+        return wp_send_json_error( "The item is not exists" );
+      }
+      
+      return wp_send_json_error( "The quantity $total_quantity" );
+    }
+
+
+
     if( $db->insert( 'make_order', [
         'data' => json_encode($data),
         'order_id' => $id

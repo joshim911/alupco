@@ -17,7 +17,7 @@
             /**
              * Insert or Upload new Items using form or by uploading excell-sheet
              */
-            // require_once __DIR__ . '/templates/insert-item.php';
+            require_once __DIR__ . '/templates/insert-item.php';
 
 
             /**

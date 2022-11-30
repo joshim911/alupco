@@ -31,6 +31,7 @@ function submitStockSheet (){
   foreach( $rows as $index => $row ){
     
     $itemCode = $row['A']; $itemDes = $row['B']; $unit = $row['C']; $qty = $row['D']; $company = $row['E'];
+    $location = $row['F'];
 
     if( $index > 1 ){
 
@@ -39,7 +40,9 @@ function submitStockSheet (){
           'item_description' => $itemDes,
           'unit' => $unit,
           'total_quantity' => $qty,
+          'partial_quantity' => $qty,
           'company_name' => $company,
+          'item_location' => $location,
           'item_submittion_status' => 1
         
         );
