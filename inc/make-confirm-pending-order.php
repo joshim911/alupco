@@ -25,6 +25,7 @@ add_action( 'wp_ajax_make_confirm_order', function (){
             // echo var_dump($total_previous_qty);
             // echo var_dump($updateTotalQty); exit; 
             // update the partial quantity
+            
            $wpdb->update('stock_manage', array( 'total_quantity' => $updateTotalQty , 'partial_quantity' => $updateTotalQty ), array( 'alupco_code' => $code ) );
    
             $wpdb->update('make_order', array( 'order_status' => 1 ), array( 'order_id' => $id ) );
@@ -35,7 +36,7 @@ add_action( 'wp_ajax_make_confirm_order', function (){
                 'item_description' => $item->item_description,
                 'item_unit'  =>  $item->unit,
                 'item_quantity' => $qty,
-                'item_previous_quantity' => $total_previous_qty,
+                'stock_quantity' => $updateTotalQty,
             );
 
             if( $wpdb->insert( 'sales_history', $salesHisotryMade ) ){

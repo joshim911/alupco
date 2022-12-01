@@ -37,6 +37,7 @@ class TemplateSetup
         // template container
         this.search_item_container = document.getElementById("search_item_container");
         this.make_order_container = document.getElementById("make_order_container");
+        this.selling_history_container = document.getElementById("selling_history_container");
         this.pending_orders_container = document.getElementById("pending_orders_container");
         this.insert_item_container = document.getElementById("insert_item_container");
 
@@ -46,12 +47,11 @@ class TemplateSetup
         // onlclick 
         this.active_search_item.onclick = () => this.show_search_item();
         this.active_make_order.onclick = () => this.show_make_order();
-        // this.active_selling_history.onclick = () => this.show_selling_history();
+        this.active_selling_history.onclick = () => this.show_selling_history();
         this.active_pending_orders.onclick = () => this.show_pending_orders();
 
         this.active_add_item.onclick = () => this.show_add_item();
-        // this.active_selling_history.onclick = () => this.show_selling_history();
-        // this.active_pending_orders.onclick = () => this.show_pending_orders();
+       
 
         
         
@@ -67,6 +67,11 @@ class TemplateSetup
         this.order_maker_section.classList.remove("d-none");
         this.hide_all_template();
         this.make_order_container.classList.remove("d-none");
+    }
+
+    show_selling_history(){
+        this.hide_all_template();
+        this.selling_history_container.classList.remove("d-none");
     }
 
     show_pending_orders(){
@@ -86,6 +91,7 @@ class TemplateSetup
     hide_all_template(){
         this.search_item_container.classList.add("d-none");
         this.make_order_container.classList.add("d-none");
+        this.selling_history_container.classList.add("d-none");
         this.insert_item_container.classList.add("d-none");
     }
 }
@@ -480,4 +486,18 @@ function delete_pending_order_editing_field(no){
 }
 
 
+
+class Selling_Hostory
+{
+    datePicker = jQuery(".datre");
+    constructor()
+    {
+        jQuery(".datre").click( function() {
+
+            let date = datePicker();
+            this.date()
+
+        } );
+    }
+}
 

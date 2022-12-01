@@ -23,7 +23,7 @@ global $items;
 	
 	
 	<div class="form-group my-3">
-	  <label for="alupco_code_src"><b>Alupco Code:</b></label>
+	  <label for="alupco_code_src">Alupco Code:</label>
 	  <input type="text" name="" id="alupco_code_src" class="form-control" placeholder="Search Item by Alupco Code" aria-describedby="helpId">
 	</div>
 	<div class="form-group container">

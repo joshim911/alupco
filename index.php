@@ -41,9 +41,17 @@
                       
                 ?>
             </section>
+           
+            <section id="selling_history_container">
+                <?php
+                
+                if( is_user_logged_in() ){
+                    require_once __DIR__ . '/templates/selling-history.php';  
+                }
+                ?>
+            </section>
+           
            <?php
-
-          
             
             /**
              * Insert or Upload new Items using form or by uploading excell-sheet
