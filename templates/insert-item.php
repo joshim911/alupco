@@ -3,7 +3,7 @@
 
 ?>
 
-<section id="add_item_section" class="d-none">
+<section id="add_item_section">
         <div class="container">
             <div class="row">
             

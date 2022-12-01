@@ -1,6 +1,6 @@
 
 
-<section class="container" id="order_section">
+<section class="container" id="order_maker_section">
 <h3 class="text-center">Make Order!</h3>
 
 
@@ -39,30 +39,23 @@
 
     <section id="new_order_item_list">
         
-    </section>
+  </section>
    
 
     <div class="form-group">
         <button class="btn btn-primary" id="order_maker_submit">Submit Order</button>
         <!-- <button class="btn btn-success mx-2" id="test_order">Add Field</button> -->
     </div>
+  </section>
 
-
-    <section id="show_pending_orders" class="my-3">
+<section id="show_pending_orders" class="my-3">
     <h3 id="pending_order_title">NO PENDING ORDER!</h3>
         <section id="render_pending_orders">
         
         </section>
-    </section>
-
 </section>
 
 <!-- edit pending order -->
-
-<!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#active_edit_order_modal">
-  Launch demo modal
-</button>
 
 <!-- Modal -->
 <div class="modal fade" id="active_edit_order_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

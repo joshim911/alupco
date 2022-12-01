@@ -6,60 +6,70 @@
     Version: 1.0
 **/
 
-
- #root{
-            min-height: 100%;
-        }
-        #sidebar{
-            width: 300px;  min-height: 100vh; z-index: 100;
-        }
-        #sidebar ul li{
-            color:blanchedalmond; 
-        }
-        #sidebar ul li{
-            cursor: pointer;
-        }
-        .menu li{
-            color: #fff; list-style: none; position: relative; top:25px; margin: 10px;
-            padding: 5px 8px;    font-size: 17px;
-        }
-        .menu li:hover{
-            background-color: #fff; color: #000; display: block;
-        }
-
-        .add_item label, .edit_item label{
-            margin-left: 20px;
-        }
-        .add_item input, .edit_item input{
-            margin: 0px 2px;
-        }
-        form div{
-            margin: 15px 0px;
-        }
-        form label{
-            font-weight: bold;
-        }
-        .input-group label{
-            margin: 0px 6px 0px 10px;
-        }
-        @media screen and (max-width: 767px) {
-           #sidebar{
-            position: fixed;
-           } 
-
-        .add_item label{
-            margin-left: 20px;
-        }
-        .add_item input{
-            margin: 0px 4px;
-        }
+    .site-title{
+       padding: 0;
+        color: #F8F8F8; text-decoration: none;
+    }
+    .site-title:hover{
+        
+        color: #F8F8F8; text-decoration: none;
+    }
+    .site-title ._title {
+        padding: 5px;
+    }
+    #root{
+        min-height: 100%;
+    }
+    #sidebar{
+        width: 300px;  min-height: 100vh; z-index: 100;
+        background-color: #F8F8F8;
+    }
+    .sidebar-menu{
+       margin: 0; padding: 0;
+    }
+    .sidebar-menu li{
+        width: 100%; padding: 8px;
+        cursor: pointer; color:black; list-style: none; 
+    }
+    .sidebar-menu li:hover{
+       background-color: rgb(250, 164, 211);
     }
 
-        .form-group label{
-            font-weight: bold;
-        }
 
-        /* get items */
-        .title{
-            font-weight: bold; margin: 0px 5px;
-        }
+
+    .add_item label, .edit_item label{
+        margin-left: 20px;
+    }
+    .add_item input, .edit_item input{
+        margin: 0px 2px;
+    }
+    form div{
+        margin: 15px 0px;
+    }
+    form label{
+        font-weight: bold;
+    }
+    .input-group label{
+        margin: 0px 6px 0px 10px;
+    }
+    @media screen and (max-width: 767px) {
+        #sidebar{
+        position: fixed;
+        } 
+
+    .add_item label{
+        margin-left: 20px;
+    }
+    .add_item input{
+        margin: 0px 4px;
+    }
+    }
+
+    .form-group label{
+        font-weight: bold;
+    }
+
+    /* get items */
+    .title{
+        font-weight: bold; margin: 0px 5px;
+    }

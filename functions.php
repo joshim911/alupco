@@ -13,10 +13,10 @@ global $wpdb;
         
         wp_enqueue_script('get-item', get_template_directory_uri() . '/assets/js/search-item.js', array('jquery'), microtime(), true);
         wp_enqueue_script('editt-item', get_template_directory_uri() . '/assets/js/edit-item.js', array('jquery'), microtime(), true);
+        wp_enqueue_script('make-order', get_template_directory_uri() . '/assets/js/make-order.js', array('jquery'), microtime(), true);
         wp_enqueue_script('newfun', get_template_directory_uri() . '/assets/js/newfun.js', array('jquery'), microtime(), true);
 
-        wp_enqueue_script('make-order', get_template_directory_uri() . '/assets/js/make-order.js', array('jquery'), microtime(), true);
-        
+                
         //  QR-Code 
         // wp_enqueue_script('qrcode-reader-helper', get_template_directory_uri() . '/assets/js/qrcode-plugin/qrcode-reader-helper.js', array('myjquery'), microtime(), true);
         // wp_enqueue_script('qrcode-reader', get_template_directory_uri() . '/assets/js/qrcode-plugin/qrcode-reader.js', array('myjquery'), microtime(), true);

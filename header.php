@@ -20,19 +20,14 @@
 <body class="">
     <header class="bg-dark mb-2">
         <div class="container">
-            <?php 
-                require_once __DIR__ . '/template-parts/sidebar.php';
-            ?>
+           <div>
+            <a href="<?php echo esc_url( bloginfo( 'url' ) ); ?>" class="site-title"><h4 class="_title"><?php echo esc_url( bloginfo( 'name' ) ); ?></h4></a>
+           </div>
         </div>
     
     </header>
-    <!-- <div class="container">
-        <div class="row">
-            <div class="col-12">
-            <div class="alert alert-primary" role="alert" id="alert"></div>
-    </div> -->
             
-    <div id="root" class="d-md-flex">
+    <div id="root" class="d-lg-flex justify-content-around">
         
            
-           
+            

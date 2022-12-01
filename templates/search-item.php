@@ -6,29 +6,31 @@ global $items;
  	<h2>Search Items</h2>
 
 	<div class="form-group">
-		<select id="company_src" class="form-control"> 
+		<select id="company_src" class="form-control">
 			<?php  
 			do_action( 'get_wharehouse_name' );
 			?>
 		</select>
 	</div>
-	<?php
-		
-		do_action( 'get_items_name' );
-	?>
+
+	<div class="form-group my-3">
+		<select id="item_name_src" class="form-control">
+			<?php	
+				do_action( 'get_items_name' );
+			?>
+		</select>
+	</div>
+	
 	
 	<div class="form-group my-3">
 	  <label for="alupco_code_src"><b>Alupco Code:</b></label>
 	  <input type="text" name="" id="alupco_code_src" class="form-control" placeholder="Search Item by Alupco Code" aria-describedby="helpId">
 	</div>
-	<div class="form-group">
+	<div class="form-group container">
 		<!-- item_src means search the item by code  -->
-		<input type="button" id="item_src_btn" class="btn btn-primary" value="Submit"/> <b id="search-item-loading-icon" class="mx-3 d-none text-danger">Loading...</b>
+		<input type="button" id="item_src_btn" class="btn btn-primary" value="Search"/> <b id="search-item-loading-icon" class="mx-3 d-none text-danger">Loading...</b>
 	</div>
-<?php 
-	$result = apply_filters( 'gsp_get_results', [], array() ); 
-	
-?>
+
 	<section id="show_items">
 		<!-- <div id="item_name">
 			<span class="title">Item Name:</span><span>Gesket</span>

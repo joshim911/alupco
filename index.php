@@ -3,21 +3,62 @@
     
     get_header();
 ?>
-    <main id="content" class="container-fluid mt-2">
+
+    <sidebar id="sidebar" class="card">
+        <?php 
+            require_once __DIR__ . '/template-parts/sidebar.php';
+        ?>
+    </sidebar>
+    <main id="content" class="container">
 
         <?php
+
+
+            /**
+             * Search Item by wharehouse or item-name or item-code
+             * this section is complate
+             */
+            ?>
+                <section id="search_item_container">
+                <?php 
+                    require_once __DIR__ . '/templates/search-item.php';
+                ?>
+                </section>
+            <?php
+            
             
 
             /**
              * for making order as if it can store the data for making panding order
              */
-            require_once __DIR__ . '/templates/make-order.php';   
+           ?>
+            <section id="make_order_container" class="d-none">
+    	        <?php 
 
+                if( is_user_logged_in() ){
+                    require_once __DIR__ . '/templates/make-order.php';  
+                }
+                      
+                ?>
+            </section>
+           <?php
+
+          
             
             /**
              * Insert or Upload new Items using form or by uploading excell-sheet
              */
-            require_once __DIR__ . '/templates/insert-item.php';
+            ?>
+            <section id="insert_item_container" class="d-none my-3">
+                <?php
+                if( is_user_logged_in() ){
+                    require_once __DIR__ . '/templates/insert-item.php'; 
+                }
+              
+                ?>
+            </section>
+            <?php
+            
 
 
             /**
@@ -26,11 +67,7 @@
             // require_once __DIR__ . '/templates/update-stock-manage.php';
            
 
-            /**
-             * Search Item by wharehouse or item-name or item-code
-             * this section is complate
-             */
-            // require_once __DIR__ . '/templates/search-item.php';
+            
         ?>
 
     </main>

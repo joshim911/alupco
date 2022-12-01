@@ -37,8 +37,7 @@ function get_items_name(){
  
     if( $items ){
         ?>
-        <div class="form-group">
-            <select id="item_name_src">
+            
             <option value="" default>Select Item by name</option>
         <?php
                 foreach( $items as   $item ){
@@ -47,7 +46,7 @@ function get_items_name(){
                     <?php
                 }
         ?>
-         </select>
+        
         
         <?php
         }else{
@@ -55,11 +54,5 @@ function get_items_name(){
                 <p class="text-danger">No Item Name exists</p>
             <?php
         }
-    
-        ?>
-        
-        </div>
-    
-        <?php
        
 }
