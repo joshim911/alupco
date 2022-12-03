@@ -67,6 +67,11 @@
                                 <label class="form-group">Alupco Code: <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" id="add_aluco_code" name="add_aluco_code"/>
                             </div>
+                            <!-- Total receiving quantity -->
+                            <div class="form-group">
+                                <label class="form-group">Total Quantity: <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="add_total_quantity" name="add_total_quantity"/>
+                            </div>
                             <!-- Alupco Group code -->
                             <div class="form-group d-none" id="add_alupco_group_code_box">
                                 <label class="form-group">Alupco Group Code:</label>
@@ -94,7 +99,7 @@
                             <!-- Quantity -->
                             <div class="form-group" id="_box">
                                 <label class="form-group">Quantity of per box:</label>
-                                <input type="number" class="form-control" id="add_quantity" name="add_quantity"/>
+                                <input type="number" class="form-control" id="add_per_boxx_quantity" name="add_per_boxx_quantity"/>
                             </div>
                             <!-- Company Name -->
                             <div class="form-group">

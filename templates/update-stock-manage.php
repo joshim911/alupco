@@ -1,6 +1,6 @@
-
-<section id="edit_item_section" class="">
-        <div class="container">
+<!-- edit_item_section -->
+<section id="" class="">
+        <div class="">
                 <h2>Edit Item</h2>
                 <div class="form-group">
                     <label>Search Item by code:</label>
@@ -120,7 +120,7 @@
                                 <input type="button" class="form-control btn btn-primary" id="update_item" value="Save Item" name="update_item" />
                             </div>  
                         </form>
-                </div>
+                    </div>
                 </section>
                 </div>
             </div>

@@ -34,12 +34,15 @@ class TemplateSetup
         this.active_edit_item = document.getElementById("active_edit_item");
         this.active_delete_item = document.getElementById("active_delete_item");
 
+        
+
         // template container
         this.search_item_container = document.getElementById("search_item_container");
         this.make_order_container = document.getElementById("make_order_container");
         this.selling_history_container = document.getElementById("selling_history_container");
         this.pending_orders_container = document.getElementById("pending_orders_container");
         this.insert_item_container = document.getElementById("insert_item_container");
+        this.update_item_container = document.getElementById("update_item_container");
 
         this.order_maker_section = document.getElementById("order_maker_section");
 
@@ -51,6 +54,7 @@ class TemplateSetup
         this.active_pending_orders.onclick = () => this.show_pending_orders();
 
         this.active_add_item.onclick = () => this.show_add_item();
+        this.active_edit_item.onclick = () => this.show_edit_item();
        
 
         
@@ -88,11 +92,17 @@ class TemplateSetup
         this.insert_item_container.classList.remove("d-none");
     }
 
+    show_edit_item(){
+        this.hide_all_template();
+        this.update_item_container.classList.remove("d-none");
+    }
+
     hide_all_template(){
         this.search_item_container.classList.add("d-none");
         this.make_order_container.classList.add("d-none");
         this.selling_history_container.classList.add("d-none");
         this.insert_item_container.classList.add("d-none");
+        this.update_item_container.classList.add("d-none");
     }
 }
 
@@ -489,15 +499,123 @@ function delete_pending_order_editing_field(no){
 
 class Selling_Hostory
 {
-    datePicker = jQuery(".datre");
     constructor()
     {
-        jQuery(".datre").click( function() {
+        this.sales_history_container = jQuery("#sales_hisory_container");
+        this.btn_soldHistory = document.getElementById("get_sold_items_by_id");
 
-            let date = datePicker();
-            this.date()
+        this.data = {};
+        this.salesID = document.getElementById("salesId");
 
-        } );
+        // onclick activies
+        this.btn_soldHistory.onclick = () => this.ajax( this.salesID.value );
+
+        this.salesID.onkeyup = () => {
+
+            if (event.keyCode === 13) {
+                this.ajax( this.salesID.value );
+            }
+            
+        };
+        
+    }
+
+
+
+    renderui() {
+
+        this.sales_history_container.html("");
+
+        if(typeof( this.data[0].order_id ) == "undefined" ){
+            	alert("Please type correct Sales Quotation or DC-Note"); return;
+        }
+        
+        let tbody; let table;
+
+        let SL =1; 
+        let card = document.createElement( 'div' );
+        card.setAttribute( "class", "card my-3 p-2" );
+       
+
+        let thead = `
+            <h6>Sales Quotation: # `+this.data[0].order_id+`</h6>
+            <table class="table">
+                <thead>
+                    <tr>
+                    <th>#</th>
+                        <th>Item-Code</th>
+                        <th>Description</th>
+                        <th>Unit</th>
+                        <th>Quantity</th>
+                        <th>Stock qty</th>
+                    </tr>
+                </thead>
+                <tbody>`;
+        
+
+        for (let i = 0; i < this.data.length; i++) {
+
+        
+            if ( tbody != null ) {
+                tbody += `
+                    <tr>
+                        <td>`+SL+`</td>
+                        <td>`+this.data[i].alupco_code+`</td>
+                        <td>`+this.data[i].item_description+`</td>
+                        <td>`+this.data[i].item_unit+`</td>
+                        <td>`+this.data[i].item_quantity+`</td>
+                        <td>`+this.data[i].stock_quantity+`</td>
+                    </tr>`;
+            } else {
+                tbody = `
+                    <tr>
+                        <td>`+SL+`</td>
+                        <td>`+this.data[i].alupco_code+`</td>
+                        <td>`+this.data[i].item_description+`</td>
+                        <td>`+this.data[i].item_unit+`</td>
+                        <td>`+this.data[i].item_quantity+`</td>
+                        <td>`+this.data[i].stock_quantity+`</td>
+                    </tr>`;
+                    SL++; 
+            }
+
+        }
+        
+        // out of loop
+        table = thead + tbody + `</tbody></table>`;
+
+        card.innerHTML = table;
+
+        this.sales_history_container.append(card);
+        
+    }
+
+    ajax( orderID ){
+
+        if( orderID == "" ){
+            alert( "Please Type Sales Quotation or DC-Note" );
+            return;
+        }
+        
+        jQuery.ajax({
+            type:"POST",
+            url:gspdata.admin_url,
+            data:{
+                "action":"selling_history",
+                "order_id":orderID
+            },
+            success: function ( response ) {
+                SalesHistory.data = response.data;
+                SalesHistory.renderui();
+                
+            },
+            error: function ( xhr, otion, error ) {
+
+            }
+        });
+
     }
 }
 
+
+const SalesHistory = new Selling_Hostory()

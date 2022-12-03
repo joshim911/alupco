@@ -1,17 +1,20 @@
 <?php
 
-if (empty($message)){
-    $message = ' ';
-}
 
 function insert(){
-    global $wpdb,$message;
+    global $wpdb;
     $data = array();
 
     if( ! empty( $_REQUEST['add_aluco_code'] ) ){
         $data['alupco_code'] = $_REQUEST['add_aluco_code'];
     }else{
         return wp_send_json_error( "Alupco code field is empty, and it is required" );
+    }
+
+    if( ! empty( $_REQUEST['add_total_quantity'] ) ){
+        $data['total_quantity'] = (int) $_REQUEST['add_total_quantity'];
+    }else{
+        return wp_send_json_error( "Itme quantity is empty, and it is required." );
     }
 
     if( ! empty( $_REQUEST['add_aluco_group_code'] ) ){
@@ -33,13 +36,9 @@ function insert(){
     if( ! empty( $_REQUEST['add_quantity_type'] ) ){
         $data['unit'] = $_REQUEST['add_quantity_type'];
     }
-
-    if( ! empty( $_REQUEST['add_quantity'] ) ){
-        $data['quantity'] = $_REQUEST['add_quantity'];
-    }
     
     if( ! empty( $_REQUEST['add_company'] ) ){
-        $data['wh/house'] = $_REQUEST['add_company'];
+        $data['per_box_quantity'] = $_REQUEST['add_company'];
     }else{
        return wp_send_json_error( "Company name Type field is empty, and it is required." );
         
@@ -61,41 +60,50 @@ function insert(){
         $data['item_gross_weight_in_kg'] = $_REQUEST['add_gross_weight'];
     }
 
+    if( ! empty( $_REQUEST['add_per_boxx_quantity'] ) ){
+        $data['per_box_quantity'] = (int) $_REQUEST['add_per_boxx_quantity'];
+    }
+
     if( ! empty( $_REQUEST['add_role_box'] ) ){
-        $data['number_of_role/box'] = $_REQUEST['add_role_box'];
+        $data['number_of_role_or_box'] = $_REQUEST['add_role_box'];
     }
     
     if( ! empty( $_REQUEST['add_quantity_role_box'] ) ){
-        $data['quantity_of_role/box'] = $_REQUEST['add_quantity_role_box'];
+        $data['quantity_of_role_or_box'] = $_REQUEST['add_quantity_role_box'];
     }
 
 $check = $_REQUEST['add_aluco_code'];
-    $get = $wpdb->get_results( "select * from products_activities where alupco_code='$check'" );
+
+    $get = $wpdb->get_row( "select * from stock_manage where alupco_code='$check'" );
+
+    $updatedQTY = (int) $data['total_quantity'] + (int) $get->total_quantity;
+    $updatedQTY2 = (int) $data['total_quantity'] + (int) $get->partial_quantity;
     if( ! $get ){
-         if( $wpdb->insert( 'products_activities', $data ) ){
+
+         if( $wpdb->insert( 'stock_manage', $data ) ){
             wp_send_json_success("Submitted!");
         }else{
             wp_send_json_error( "Not submitted, please try again." );
         }
 
     }else{
-        wp_send_json_error( "This item already exists." );
+
+       $updateStatus = $wpdb->update( 'stock_manage', 
+        [ 'total_quantity' => $updatedQTY, 'partial_quantity' => $updatedQTY2 ],
+        [ 'alupco_code' => $data['alupco_code'] ] );
+
+        // if( $updateStatus == 0 ){
+            wp_send_json_success("Stock updated!");
+        // }else{
+        //     wp_send_json_error("item did not update");
+        // }
+        
+        
     }
    
 }
+
 if( isset($_REQUEST['item_add_submit']) ){
+
     insert();            
 }
-
-
-add_filter( 'gsp_get_results', function(){
-    global $wpdb;
-    $result = $wpdb->get_results(" select * from  products_activities");
-    
-    if( $result ){
-        return $result;
-    }else{
-        return "somethings went wrong";
-    }
-    
-} );

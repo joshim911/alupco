@@ -1,3 +1,7 @@
+jQuery("#active_edit_item").click( function(){
+    jQuery("#insert_item_container").removeClass("d-none");
+} );
+
 jQuery("#search_edit_item_submit").click(function (e) { 
 
    let value = jQuery("#search_edit_item").val();
@@ -5,15 +9,19 @@ jQuery("#search_edit_item_submit").click(function (e) {
 
         jQuery.ajax({
             type: "GET",
-            url: "https://alupco.writteninfo.com/wp-admin/admin-ajax.php",
+            url: gspdata.admin_url,
             data: {
                 'action': 'update_item',
                 'nonce': gspdata.nonce,
-                'id': index,
+                'edit_aluco_code': value,
+                'get_item': 1,
+                'update_item': 0,
             },
             success: function (response) {
+                console.log(response);
                 jQuery("#show_items").html('');
-                if( response.data[0].alupco_code ){
+
+                if( response.data.alupco_code ){
                     set_edit_ui(response);
                     set_inputs_visible();
                     
@@ -24,47 +32,13 @@ jQuery("#search_edit_item_submit").click(function (e) {
                 }
                 
             }
-        });
 
+        });
 });
 
 
 
-function load_more_item(){
-    location.reload();
-}
 
-function update_item_by_id( index ){
-
-    
-    jQuery.ajax({
-        type: "GET",
-        url: gspdata.admin_url,
-        data: {
-            'action':'update_item_by_id',
-            'nonce':gspdata.nonce,
-            'id':index
-        },
-        success: function (response) {
-            jQuery("#show_items").html('');
-
-                if (jQuery("#edit_form").hasClass("d-none") ) {
-                    jQuery("#edit_form").removeClass("d-none");  
-                }
-                jQuery("#edit_form").show();
-                jQuery("#item-"+index).remove();
-
-                set_edit_ui(response);
-                set_inputs_visible();
-            
-        }
-    });
-
-    if( jQuery("#edit_by_id").hasClass("d-none") ){
-        jQuery("#edit_by_id").removeClass("d-none");
-    }
-   jQuery("#edit_by_id").show(100);
-}
 
 function set_inputs_visible(){
     jQuery("#active_edit_item_name").prop('checked',true);
@@ -144,7 +118,7 @@ function unset_inputs_visible(){
 
 function set_edit_ui( data = {} ){
     
-    let item = data.data[0];
+    let item = data.data;
     if( jQuery("#edit_item_form").hasClass("d-none") ){
         jQuery("#edit_item_form").removeClass("d-none");
     }
@@ -205,14 +179,14 @@ function set_edit_ui( data = {} ){
         jQuery("#edit_role_box").val("");
     }
 
-    if (item.quantity) {
-        jQuery("#edit_quantity").val(item.quantity);
+    if (item.per_box_quantity) {
+        jQuery("#edit_quantity").val(item.per_box_quantity);
     }else{
         jQuery("#edit_quantity").val("");
     }
 
-    if (item.quantity_type) {
-        jQuery("#edit_quantity_type").val(item.quantity_type);
+    if (item.unit) {
+        jQuery("#edit_quantity_type").val(item.unit);
     }else{
         jQuery("#edit_quantity_type").val("");
     }
@@ -260,7 +234,7 @@ function update_item() {
     let status = jQuery("#item_status").val();
     jQuery.ajax({
         type: "GET",
-            url: "https://alupco.writteninfo.com/wp-admin/admin-ajax.php",
+            url: gspdata.admin_url,
             data: {
                 
                 "action": 'update_item',
@@ -283,13 +257,14 @@ function update_item() {
                 
             },
             success: function (response) {
-                console.log(response.data[0].alupco_code);
+                console.log(response);
             }
     });
 
 }
 
 jQuery("#update_item").click( function(){
+
     update_item(); 
     
     if( jQuery("#uncompleted_list").length == 1 ){
@@ -303,4 +278,44 @@ jQuery("#update_item").click( function(){
     jQuery("#edit_by_id").hide(100);
 } );
 
-jQuery("#edit_by_id").hide();
+
+// jQuery("#edit_by_id").hide();
+
+// set_inputs_visible();
+
+
+// function load_more_item(){
+//     location.reload();
+// }
+
+// function update_item_by_id( index ){
+
+    
+//     jQuery.ajax({
+//         type: "GET",
+//         url: gspdata.admin_url,
+//         data: {
+//             'action':'update_item_by_id',
+//             'nonce':gspdata.nonce,
+//             'id':index
+//         },
+//         success: function (response) {
+//             jQuery("#show_items").html('');
+
+//                 if (jQuery("#edit_form").hasClass("d-none") ) {
+//                     jQuery("#edit_form").removeClass("d-none");  
+//                 }
+//                 jQuery("#edit_form").show();
+//                 jQuery("#item-"+index).remove();
+
+//                 set_edit_ui(response);
+//                 set_inputs_visible();
+            
+//         }
+//     });
+
+//     if( jQuery("#edit_by_id").hasClass("d-none") ){
+//         jQuery("#edit_by_id").removeClass("d-none");
+//     }
+//    jQuery("#edit_by_id").show(100);
+// }

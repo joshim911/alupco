@@ -42,12 +42,27 @@
                 ?>
             </section>
            
-            <section id="selling_history_container">
+            <section id="selling_history_container" class="d-none">
                 <?php
                 
                 if( is_user_logged_in() ){
                     require_once __DIR__ . '/templates/selling-history.php';  
                 }
+                ?>
+            </section>
+            
+                <?
+            /**
+             * Update or edit for stock-manage 
+             */
+            // require_once __DIR__ . '/templates/update-stock-manage.php';
+           ?>
+            <section id="update_item_container" class="container d-none my-3">
+                <?php
+                if( is_user_logged_in() ){
+                    require_once __DIR__ . '/templates/update-item.php'; 
+                }
+              
                 ?>
             </section>
            
@@ -69,14 +84,7 @@
             
 
 
-            /**
-             * Update or edit for stock-manage 
-             */
-            // require_once __DIR__ . '/templates/update-stock-manage.php';
-           
-
-            
-        ?>
+            ?>
 
     </main>
 
