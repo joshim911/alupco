@@ -31,3 +31,50 @@ add_action( 'wp_ajax_nopriv_get_items', 'searchItem');
       echo wp_send_json_error("Data not found");
     }
   }
+
+
+  add_action("wp_ajax_make_inventory", function(){
+
+    global $wpdb; $alpcode = $_REQUEST['alp_code'];
+
+    if( isset( $_REQUEST['inventory'] )  && ! empty($_REQUEST['alp_code']) ){
+      
+      if( ! empty($_REQUEST['total_quantity']) ){
+        $qty = (int) $_REQUEST['total_quantity'];
+      }else{
+        wp_send_json_error( "Total Quantity has empty value" );
+      }
+
+      $result = $wpdb->get_row("select * from stock_manage where alupco_code='{$alpcode}'");
+  
+      $wpdb->update( 'stock_manage', [ 'total_quantity' => $qty, 'partial_quantity' => $qty ], [ 'alupco_code' => $alpcode ] );
+
+      $wpdb->insert( "stock_inventory", array(
+        "item_code" => $alpcode,
+        "item_description" => $result->item_description,
+        "inventory_quantity"=> $qty,
+        "old_quantity" => $result->total_quantity,
+        "unit" => $result->unit,
+
+      ) );
+
+      $newResult = $wpdb->get_row("select * from stock_manage where alupco_code = '{$alpcode}'");
+
+      if( $newResult ){
+        wp_send_json_success($newResult);
+      }
+
+    }else{
+      
+      $query = $wpdb->get_row(" select * from stock_manage where alupco_code = '$alpcode' ");
+
+      if( $query ){
+        wp_send_json_success( $query );
+      }else{
+        wp_send_json_error("Did not fount item for -> $alpcode");
+      }
+    }
+
+    
+
+  });

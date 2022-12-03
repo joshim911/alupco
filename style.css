@@ -73,3 +73,9 @@
     .title{
         font-weight: bold; margin: 0px 5px;
     }
+
+    #loading{
+        position: fixed; top: calc(50% - 65px); left: calc(50% - 65px); width: 130px; height: 130px;
+        background-color: aqua; border-radius: 50%; line-height: 130px;
+        z-index: 1000;
+    }

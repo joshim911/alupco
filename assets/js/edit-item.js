@@ -3,7 +3,7 @@ jQuery("#active_edit_item").click( function(){
 } );
 
 jQuery("#search_edit_item_submit").click(function (e) { 
-
+    showLoading();
    let value = jQuery("#search_edit_item").val();
     console.log(value);
 
@@ -20,7 +20,7 @@ jQuery("#search_edit_item_submit").click(function (e) {
             success: function (response) {
                 console.log(response);
                 jQuery("#show_items").html('');
-
+                hideLoading();
                 if( response.data.alupco_code ){
                     set_edit_ui(response);
                     set_inputs_visible();
@@ -223,7 +223,7 @@ function update_item() {
     let sp_code = jQuery("#edit_supplier_code").val();
     let sp_gcode = jQuery("#edit_supplier_group_code").val();
     let unit_type = jQuery("#edit_quantity_type").val();
-    let quantity = jQuery("#edit_quantity").val();
+    let per_box_quantity = jQuery("#edit_per_box_quantity").val();
     let company = jQuery("#edit_company").val();
     let location = jQuery("#edit_location").val();
     let color = jQuery("#edit_color").val();
@@ -245,7 +245,7 @@ function update_item() {
                 "edit_supplier_group_code":sp_gcode,
                 "edit_item_name":name,
                 "edit_quantity_type":unit_type,
-                "edit_quantity":quantity,
+                "edit_per_box_quantity":per_box_quantity,
                 "edit_company":company,
                 "edit_location":location,
                 "edit_color":color,
@@ -257,14 +257,14 @@ function update_item() {
                 
             },
             success: function (response) {
-                console.log(response);
+                hideLoading();
             }
     });
 
 }
 
 jQuery("#update_item").click( function(){
-
+    showLoading();
     update_item(); 
     
     if( jQuery("#uncompleted_list").length == 1 ){

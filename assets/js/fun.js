@@ -1,3 +1,15 @@
+
+function showLoading () {
+    let loading = jQuery("#loading");
+    loading.removeClass("d-none");
+}
+
+function hideLoading(){
+    let loading = jQuery("#loading");
+    loading.addClass("d-none");
+}
+
+
 jQuery(document).ready( function(){
 
     // active add item section

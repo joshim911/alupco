@@ -19,24 +19,40 @@ function update_item( $param ){
         return wp_send_json_success( $getItem );
     }
    
-    $data = array(
-        'alupco_group_code' => $_REQUEST['edit_aluco_group_code'],
-        'supplier_code' => $_REQUEST['edit_supplier_code'],
-        'item_name' => $_REQUEST['edit_item_name'],
-        'supplier_group_code' => $_REQUEST['edit_supplier_group_code'],
-        'total_quantity'  => $_REQUEST['edit_quantity'],
-        'partial_quantity'  => $_REQUEST['edit_quantity'],
-        'unit' => $_REQUEST['edit_quantity_type'],
-        'company_name' => $_REQUEST['edit_company'],
-        'item_location' => $_REQUEST['edit_location'],
-        'item_color' => $_REQUEST['edit_color'],
-        'item_net_weight_in_kg' => $_REQUEST['edit_net_weight'],
-        'item_gross_weight_in_kg' => $_REQUEST['edit_gross_weight'],
-        'per_box_quantity' => (int) $_REQUEST['add_per_boxx_quantity'],
-        'number_of_role_or_box' => $_REQUEST['edit_role_box'],
-        'quantity_of_role_or_box'=> $_REQUEST['edit_quantity_role_box'],
-        'item_submittion_status'  => $_REQUEST['status']
-    );
+    $data = []; 
+
+    !empty( $_REQUEST['edit_aluco_group_code'] ) ?  $data['alupco_group_code'] = $_REQUEST['edit_aluco_group_code'] : '';
+
+    !empty( $_REQUEST['edit_supplier_code'] ) ?  $data['supplier_code'] = $_REQUEST['edit_supplier_code'] : '';
+
+    !empty( $_REQUEST['edit_item_name'] ) ?  $data['item_name'] = $_REQUEST['edit_item_name'] : '';
+
+    !empty( $_REQUEST['edit_supplier_group_code'] ) ?  $data['supplier_group_code'] = $_REQUEST['edit_supplier_group_code'] : '';
+
+    // !empty( $_REQUEST['edit_quantity'] ) ?  $data['partial_quantity'] = $_REQUEST['edit_quantity'] : '';
+
+    !empty( $_REQUEST['edit_quantity_type'] ) ?  $data['unit'] = $_REQUEST['edit_quantity_type'] : '';
+
+    !empty( $_REQUEST['edit_company'] ) ?  $data['company_name'] = $_REQUEST['edit_company'] : '';
+    
+    !empty( $_REQUEST['edit_location'] ) ?  $data['item_location'] = $_REQUEST['edit_location'] : '';
+
+    !empty( $_REQUEST['edit_color'] ) ?  $data['item_color'] = $_REQUEST['edit_color'] : '';
+    
+    !empty( $_REQUEST['edit_net_weight'] ) ?  $data['item_net_weight_in_kg'] = $_REQUEST['edit_net_weight'] : '';
+    
+    !empty( $_REQUEST['edit_gross_weight'] ) ?  $data['item_gross_weight_in_kg'] = $_REQUEST['edit_gross_weight'] : '';
+    
+    !empty( $_REQUEST['edit_per_box_quantity'] ) ?  $data['per_box_quantity'] = (int) $_REQUEST['edit_per_box_quantity'] : '';
+    
+    !empty( $_REQUEST['edit_role_box'] ) ?  $data['number_of_role_or_box'] = $_REQUEST['edit_role_box'] : '';
+    
+    !empty( $_REQUEST['edit_quantity_role_box'] ) ?  $data['quantity_of_role_or_box'] = $_REQUEST['edit_quantity_role_box'] : '';
+    
+    !empty( $_REQUEST['edit_aluco_group_code'] ) ?  $data['item_submittion_status'] = $_REQUEST['edit_aluco_group_code'] : '';
+    
+    !empty( $_REQUEST['status'] ) ?  $data['alupco_group_code'] = $_REQUEST['status'] : '';
+   
 
     // wp_send_json_error( $data );
     

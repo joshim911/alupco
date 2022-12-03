@@ -32,6 +32,7 @@ class TemplateSetup
 
         this.active_add_item = document.getElementById("active_add_item");
         this.active_edit_item = document.getElementById("active_edit_item");
+        this.active_stock_inventory = document.getElementById("active_stock_inventory");
         this.active_delete_item = document.getElementById("active_delete_item");
 
         
@@ -43,6 +44,7 @@ class TemplateSetup
         this.pending_orders_container = document.getElementById("pending_orders_container");
         this.insert_item_container = document.getElementById("insert_item_container");
         this.update_item_container = document.getElementById("update_item_container");
+        this.stock_inventory_container = document.getElementById("stock_inventory_container");
 
         this.order_maker_section = document.getElementById("order_maker_section");
 
@@ -55,6 +57,7 @@ class TemplateSetup
 
         this.active_add_item.onclick = () => this.show_add_item();
         this.active_edit_item.onclick = () => this.show_edit_item();
+        this.active_stock_inventory.onclick = () => this.show_stock_inventory();
        
 
         
@@ -97,12 +100,18 @@ class TemplateSetup
         this.update_item_container.classList.remove("d-none");
     }
 
+    show_stock_inventory(){
+        this.hide_all_template();
+        this.stock_inventory_container.classList.remove("d-none");
+    }
+
     hide_all_template(){
         this.search_item_container.classList.add("d-none");
         this.make_order_container.classList.add("d-none");
         this.selling_history_container.classList.add("d-none");
         this.insert_item_container.classList.add("d-none");
         this.update_item_container.classList.add("d-none");
+        this.stock_inventory_container.classList.add("d-none");
     }
 }
 
@@ -245,7 +254,6 @@ class Show_pending_orders
                 console.log(error);
             }
     
-    
         });
     
     }
@@ -257,6 +265,9 @@ class Show_pending_orders
 
 
 function confirm_order( order_id ){
+
+    showLoading();
+
     console.log( "confirm order -> order_id "+order_id );
     jQuery("#order_maker_submit");
     jQuery.ajax({
@@ -270,6 +281,7 @@ function confirm_order( order_id ){
         },
         success: function (response){
 
+            hideLoading();
             if ( response.success ) {
 
                 jQuery("#render_pending_orders").html(' ');
@@ -285,6 +297,7 @@ function confirm_order( order_id ){
             console.log(xhr);
             console.log(otion);
             console.log(error);
+            hideLoading();
         }
 
 
@@ -293,6 +306,8 @@ function confirm_order( order_id ){
 }
 
 function edit_order( rowID ){
+
+    showLoading();
 
     ShowPendingOrders.rowID = rowID;
 
@@ -304,7 +319,7 @@ function edit_order( rowID ){
             "row_id":rowID
         },
         success:function ( response ) {
-           
+           hideLoading();
             render_edit_order_items( response );
         }
     });
@@ -312,6 +327,8 @@ function edit_order( rowID ){
 }
 
 function delete_order( order_id ){
+
+    showLoading();
     
     jQuery.ajax({
         type:'GET',
@@ -322,6 +339,8 @@ function delete_order( order_id ){
             'order_id': order_id,
         },
         success: function ( response ) {
+
+            hideLoading();
             if (response.success) {
                 jQuery("#render_pending_orders").html(' ');
                 jQuery("#pending_order_title").html( "NO PENDING ORDER!");
@@ -333,7 +352,8 @@ function delete_order( order_id ){
             console.log(response);
         },
         error: function ( xhr, option, error ) {
-            
+            hideLoading();
+
         }
     });
 }
@@ -344,6 +364,7 @@ function delete_order( order_id ){
  * Order Making
  */
 jQuery("#order_maker_submit").click( function (){
+
     let house = jQuery("#make_order_company_name" ).val();
     let orderID = jQuery("#order_making_id" ).val();
     let newOrderID = jQuery("#new_order_making_id" ).val();
@@ -361,6 +382,8 @@ jQuery("#order_maker_submit").click( function (){
         return console.log("Please field the form in the right data");
     }
 
+    showLoading();
+
     jQuery.ajax({
         type: "GET",
         url: gspdata.admin_url,
@@ -374,13 +397,16 @@ jQuery("#order_maker_submit").click( function (){
         },
         success: function (response) {
             
+            hideLoading();
+
             console.log( response );
             new Show_pending_orders();
         },
         error: function (xhr, ajaxOptions, Error) {
             
             alert( 'Make sure, you are logged in user' );
-            
+            hideLoading();
+
             console.log(xhr);
             console.log(ajaxOptions);
             console.log(Error);
@@ -394,8 +420,6 @@ jQuery("#order_maker_submit").click( function (){
 
 function render_edit_order_items ( ajax_data ) {
 
-    console.log(ajax_data);
-    
     let itemsBody = jQuery("#edit_pending_order_body");
     
     itemsBody.html( " " ); 
@@ -467,6 +491,8 @@ function save_pending_order_items( order_id, company, code, qty ){
 
 function update_pending_order_items(data){
 
+    showLoading();
+
     jQuery.ajax({
         type:"GET",
         url:gspdata.admin_url,
@@ -479,6 +505,7 @@ function update_pending_order_items(data){
         success: function ( response ){
             console.log(response);
             location.reload();
+            hideLoading();
         }
 
     });
@@ -597,6 +624,8 @@ class Selling_Hostory
             return;
         }
         
+        showLoading();
+
         jQuery.ajax({
             type:"POST",
             url:gspdata.admin_url,
@@ -605,12 +634,14 @@ class Selling_Hostory
                 "order_id":orderID
             },
             success: function ( response ) {
+                hideLoading();
                 SalesHistory.data = response.data;
                 SalesHistory.renderui();
+                hideLoading();
                 
             },
             error: function ( xhr, otion, error ) {
-
+                hideLoading();
             }
         });
 

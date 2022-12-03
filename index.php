@@ -65,7 +65,18 @@
               
                 ?>
             </section>
-           
+
+            <?php
+            // for inventory
+               ?>
+               <section id="stock_inventory_container" class="d-none">
+                <?php 
+                 if( is_user_logged_in() ){
+                    require_once __DIR__ . '/templates/inventory.php'; 
+                }
+                ?>
+               </section> 
+        
            <?php
             
             /**
@@ -85,8 +96,12 @@
 
 
             ?>
-
+        
+               
     </main>
+    <div id="loading" class="text-center d-none">
+        <b>Loading...</b>
+    </div>
 
 <?php 
     

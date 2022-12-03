@@ -74,16 +74,11 @@
     <div class="form-group" id="_box">
         <label class="form-group">Quantity Type:</label>
         <input type="text" class="form-control" id="edit_quantity_type" />
-        <!-- <select class="form-control" id="edit_quantity_type" name="edit_quantity_type">
-            <option value="pcs">PCS</option>
-            <option value="mtr">MTR</option>
-            <option value="set">SET</option>
-        </select> -->
     </div>
     <!-- Quantity -->
     <div class="form-group" id="_box">
         <label class="form-group">Quantity of per box:</label>
-        <input type="number" class="form-control" id="edit_quantity" name="edit_quantity"/>
+        <input type="number" class="form-control" id="edit_per_box_quantity" name="edit_per_box_quantity"/>
     </div>
     <!-- Company Name -->
     <div class="form-group">
@@ -107,7 +102,7 @@
     </div>
     <!-- Box Gross Weight -->
     <div class="form-group d-none" id="edit_gross_weight_box">
-        <label class="form-group">Net Weight in KG:</label>
+        <label class="form-group">Gross Weight in KG:</label>
         <input type="number" class="form-control" id="edit_gross_weight" name="edit_gross_weight"/>
     </div>
     <!-- Role/Small Box -->
