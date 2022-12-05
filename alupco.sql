@@ -1,0 +1,612 @@
+-- phpMyAdmin SQL Dump
+-- version 5.2.0
+-- https://www.phpmyadmin.net/
+--
+-- Host: 127.0.0.1
+-- Generation Time: Dec 05, 2022 at 03:15 PM
+-- Server version: 10.4.25-MariaDB
+-- PHP Version: 7.4.30
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Database: `alupco`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `get_company_name`
+--
+
+CREATE TABLE `get_company_name` (
+  `id` int(6) NOT NULL,
+  `company_name` varchar(100) NOT NULL,
+  `date` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `get_company_name`
+--
+
+INSERT INTO `get_company_name` (`id`, `company_name`, `date`) VALUES
+(1, 'company-11', '2022-11-26 11:52:21'),
+(2, 'company-12', '2022-11-27 08:52:37'),
+(3, 'company-13', '2022-11-27 08:52:55'),
+(4, 'company-16', '2022-11-27 08:52:55');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `get_item_name`
+--
+
+CREATE TABLE `get_item_name` (
+  `id` int(6) NOT NULL,
+  `item_name` varchar(100) NOT NULL,
+  `date` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `get_item_name`
+--
+
+INSERT INTO `get_item_name` (`id`, `item_name`, `date`) VALUES
+(1, 'Gasket', '2022-12-04 08:42:54'),
+(2, 'SCREW', '2022-12-04 08:43:07'),
+(3, 'GIESSE', '2022-12-04 08:43:42');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `make_order`
+--
+
+CREATE TABLE `make_order` (
+  `id` int(11) NOT NULL,
+  `data` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`data`)),
+  `order_id` varchar(50) NOT NULL,
+  `order_status` int(2) DEFAULT 0,
+  `date` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `make_order`
+--
+
+INSERT INTO `make_order` (`id`, `data`, `order_id`, `order_status`, `date`) VALUES
+(23, '[{\"order_id\":\"ORDER\",\"company_name\":\"company-13\",\"item_code\":\"AT 00120006U\",\"item_qty\":\"100\"}]', 'ORDER', 1, '2022-11-30 16:32:22'),
+(24, '[{\"order_id\":\"ORDER-1\",\"company_name\":\"company-13\",\"item_code\":\"AT 00120006U\",\"item_qty\":\"949\"}]', 'ORDER-1', 1, '2022-11-30 16:45:37'),
+(25, '[{\"order_id\":\"ERG\",\"company_name\":\"company-13\",\"item_code\":\"AT 00120006U\",\"item_qty\":\"1000\"}]', 'ERG', 1, '2022-11-30 16:48:39'),
+(26, '[{\"order_id\":\"DFG\",\"company_name\":\"company-13\",\"item_code\":\"AT 00120006U\",\"item_qty\":\"500\"}]', 'DFG', 1, '2022-11-30 16:50:37'),
+(27, '[{\"order_id\":\"DFGD\",\"company_name\":\"company-13\",\"item_code\":\"AT 00120006U\",\"item_qty\":\"500\"}]', 'DFGD', 1, '2022-11-30 16:50:46'),
+(28, '[{\"order_id\":\"SDGSAG\",\"company_name\":\"company-13\",\"item_code\":\"AT 00120006U\",\"item_qty\":\"1000\"}]', 'SDGSAG', 1, '2022-12-01 09:55:09'),
+(32, '[{\"order_id\":\"SFSAG\",\"company_name\":\"company-13\",\"item_code\":\"AT 00120006U\",\"item_qty\":\"1000\"}]', 'SFSAG', 1, '2022-12-01 14:36:35');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `sales_history`
+--
+
+CREATE TABLE `sales_history` (
+  `id` int(11) NOT NULL,
+  `order_id` varchar(30) NOT NULL,
+  `alupco_code` varchar(50) NOT NULL,
+  `item_description` longtext NOT NULL,
+  `item_unit` varchar(20) NOT NULL,
+  `item_quantity` int(7) NOT NULL,
+  `stock_quantity` int(7) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `sales_history`
+--
+
+INSERT INTO `sales_history` (`id`, `order_id`, `alupco_code`, `item_description`, `item_unit`, `item_quantity`, `stock_quantity`) VALUES
+(1, '0', 'AT 00120006U', 'GIESSE FLASH BASE HINGE        ', 'PCS', 949, 14949),
+(2, '0', 'AT 00120006U', 'GIESSE FLASH BASE HINGE        ', 'PCS', 1000, 14000),
+(3, '0', 'AT 00120006U', 'GIESSE FLASH BASE HINGE        ', 'PCS', 500, 13000),
+(4, '0', 'AT 00120006U', 'GIESSE FLASH BASE HINGE        ', 'PCS', 500, 12500),
+(5, 'SDGSAG', 'AT 00120006U', 'GIESSE FLASH BASE HINGE        ', 'PCS', 1000, 12000),
+(6, 'SFSAG', 'AT 00120006U', 'GIESSE FLASH BASE HINGE        ', 'PCS', 1000, 10000);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `stock_inventory`
+--
+
+CREATE TABLE `stock_inventory` (
+  `id` int(11) NOT NULL,
+  `item_code` varchar(50) NOT NULL,
+  `item_description` varchar(255) NOT NULL,
+  `unit` varchar(10) NOT NULL,
+  `inventory_quantity` int(11) NOT NULL,
+  `old_quantity` int(7) NOT NULL,
+  `date` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `stock_inventory`
+--
+
+INSERT INTO `stock_inventory` (`id`, `item_code`, `item_description`, `unit`, `inventory_quantity`, `old_quantity`, `date`) VALUES
+(1, '0', '0', 'PCS', 2700, 2700, '2022-12-03 12:33:40'),
+(2, 'AT 00120006U', 'GIESSE FLASH BASE HINGE        ', 'PCS', 3000, 2700, '2022-12-03 12:34:52'),
+(3, 'AT 00120006U', 'GIESSE FLASH BASE HINGE        ', 'PCS', 3500, 3000, '2022-12-03 12:57:23'),
+(4, 'AT 00120006U', 'GIESSE FLASH BASE HINGE        ', 'PCS', 11, 3500, '2022-12-03 13:00:56'),
+(5, 'AT 00120006U', 'GIESSE FLASH BASE HINGE        ', 'PCS', 2523, 11, '2022-12-03 13:02:56'),
+(6, 'AT 00120006U', 'GIESSE FLASH BASE HINGE        ', 'PCS', 3000, 2523, '2022-12-03 13:05:12'),
+(7, 'AT 00120006U', 'GIESSE FLASH BASE HINGE        ', 'PCS', 243, 3000, '2022-12-03 13:06:40'),
+(8, 'AT 00120006U', 'GIESSE FLASH BASE HINGE        ', 'PCS', 2332, 243, '2022-12-03 13:07:18'),
+(9, 'AT 00120006U', 'GIESSE FLASH BASE HINGE        ', 'PCS', 123, 2332, '2022-12-03 13:07:52'),
+(10, 'AT 00120006U', 'GIESSE FLASH BASE HINGE        ', 'PCS', 123, 123, '2022-12-03 13:08:42');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `stock_manage`
+--
+
+CREATE TABLE `stock_manage` (
+  `id` int(11) NOT NULL,
+  `alupco_code` varchar(150) CHARACTER SET utf16 NOT NULL,
+  `alupco_group_code` varchar(150) CHARACTER SET utf16 DEFAULT NULL,
+  `supplier_code` varchar(150) CHARACTER SET utf16 DEFAULT NULL,
+  `supplier_group_code` varchar(150) CHARACTER SET utf16 DEFAULT NULL,
+  `unit` varchar(10) CHARACTER SET utf16 NOT NULL,
+  `total_quantity` int(7) NOT NULL,
+  `partial_quantity` int(7) DEFAULT NULL,
+  `company_name` varchar(150) CHARACTER SET utf16 NOT NULL,
+  `item_name` varchar(100) DEFAULT NULL,
+  `item_description` varchar(250) DEFAULT NULL,
+  `item_location` varchar(150) CHARACTER SET utf16 DEFAULT NULL,
+  `item_color` varchar(150) CHARACTER SET utf16 DEFAULT NULL,
+  `item_net_weight_in_kg` float DEFAULT NULL,
+  `item_gross_weight_in_kg` float DEFAULT NULL,
+  `per_box_quantity` int(6) DEFAULT NULL,
+  `number_of_role_or_box` int(11) DEFAULT NULL,
+  `quantity_of_role_or_box` float DEFAULT NULL,
+  `date` datetime NOT NULL DEFAULT current_timestamp(),
+  `item_submittion_status` varchar(5) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `stock_manage`
+--
+
+INSERT INTO `stock_manage` (`id`, `alupco_code`, `alupco_group_code`, `supplier_code`, `supplier_group_code`, `unit`, `total_quantity`, `partial_quantity`, `company_name`, `item_name`, `item_description`, `item_location`, `item_color`, `item_net_weight_in_kg`, `item_gross_weight_in_kg`, `per_box_quantity`, `number_of_role_or_box`, `quantity_of_role_or_box`, `date`, `item_submittion_status`) VALUES
+(1, 'AT 00120006U', NULL, NULL, NULL, 'PCS', 14949, 14949, 'company-13', 'GIESSE', 'GIESSE FLASH BASE HINGE        ', '57', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:21', '0'),
+(2, 'AT 00120410U', NULL, NULL, NULL, 'PCS', 10000, 10000, 'company-13', 'GIESSE', 'FLASH BASE HINGE  9010         ', '85', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:21', '0'),
+(3, 'AT 00120500U', NULL, NULL, NULL, 'PCS', 7901, 7901, 'company-13', 'GIESSE', 'GIESSE FLASH BASE HINGE        ', '50', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:21', '0'),
+(4, 'AT 00136005U', NULL, NULL, NULL, 'PCS', 1000, 1000, 'company-13', 'GIESSE', 'FLASH BASE HINGE INSTALLU  BAP ', '82', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:21', '0'),
+(5, 'AT 00136500U', NULL, NULL, NULL, 'PCS', 559, 559, 'company-13', 'GIESSE', 'FLASH BASE HINGE INSTALLU 9005 ', '80', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:21', '0'),
+(6, 'AT 00681005', NULL, NULL, NULL, 'PCS', 1499, 1499, 'company-13', 'GIESSE', 'CELERA HINGE EURO GROOVE       ', '44', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:21', '0'),
+(7, 'AT 00681410', NULL, NULL, NULL, 'PCS', 500, 500, 'company-13', 'GIESSE', 'CELERA HINGE EURO GROOVE  9010 ', '37', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:21', '0'),
+(8, 'AT 00681500', NULL, NULL, NULL, 'PCS', 838, 838, 'company-13', 'GIESSE', 'CELERA HINGE EURO GROOVE  9005 ', '97', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:21', '0'),
+(9, 'AT 00957005', NULL, NULL, NULL, 'PCS', 1000, 1000, 'company-13', 'GIESSE', 'KORA CREMONE LEAF              ', '73', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:21', '0'),
+(10, 'AT 00957410', NULL, NULL, NULL, 'PCS', 999, 999, 'company-13', 'GIESSE', 'KORA CREMONE LEAF              ', '61', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:21', '0'),
+(11, 'AT 00957500', NULL, NULL, NULL, 'PCS', 999, 999, 'company-13', 'GIESSE', 'KORA CREMONE LEAF              ', '84', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:21', '0'),
+(12, 'AT 00959410', NULL, NULL, NULL, 'PCS', 500, 500, 'company-13', 'GIESSE', 'KORA CREMONE T/T MICROVENTILAT ', '91', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:21', '0'),
+(13, 'AT 00959500', NULL, NULL, NULL, 'PCS', 298, 298, 'company-13', 'GIESSE', 'EURO 900 CREMONE MICROVENTILAT ', '90', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:21', '0'),
+(14, 'AT 01000005U', NULL, NULL, NULL, 'PCS', 999, 999, 'company-13', 'GIESSE', 'CREMONE EURO                   ', '66', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:21', '0'),
+(15, 'AT 01000410U', NULL, NULL, NULL, 'PCS', 999, 999, 'company-13', 'GIESSE', 'CREMONE EURO    9010           ', '75', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:21', '0'),
+(16, 'AT 01000500U', NULL, NULL, NULL, 'PCS', 341, 341, 'company-13', 'GIESSE', 'CREMONE EURO  9005             ', '100', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:21', '0'),
+(17, 'AT 01063005', NULL, NULL, NULL, 'PCS', 1000, 1000, 'company-13', 'GIESSE', 'ASIA OUTWARDCREMONE 0-180°     ', '81', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:21', '0'),
+(18, 'AT 01094005', NULL, NULL, NULL, 'PCS', 1000, 1000, 'company-13', 'GIESSE', 'EURO 900 CREMONE MICROVENTILAT ', '78', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:21', '0'),
+(19, 'AT 01094410', NULL, NULL, NULL, 'PCS', 500, 500, 'company-13', 'GIESSE', 'EURO 900 CREMONE MICROVENTILAT ', '93', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:21', '0'),
+(20, 'AT 01094500', NULL, NULL, NULL, 'PCS', 497, 497, 'company-13', 'GIESSE', 'EURO 900 CREMONE MICROVENTILAT ', '37', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:21', '0'),
+(21, 'AT 01267000K', NULL, NULL, NULL, 'PCS', 3900, 3900, 'company-13', 'GIESSE', 'CURTAIN WALL STRIKER           ', '84', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:21', '0'),
+(22, 'AT 01353000K', NULL, NULL, NULL, 'PCS', 2000, 2000, 'company-13', 'GIESSE', 'ADJUSTABLE SINGLE STRIKER      ', '106', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:21', '0'),
+(23, 'AT 01701005N', NULL, NULL, NULL, 'PCS', 1000, 1000, 'company-13', 'GIESSE', 'GRISBI FINGER CATCH            ', '41', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:21', '0'),
+(24, 'AT 01704410', NULL, NULL, NULL, 'PCS', 520, 520, 'company-13', 'GIESSE', 'TWIN CATCH - EURO GROOVE  9010 ', '74', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:21', '0'),
+(25, 'AT 01704500', NULL, NULL, NULL, 'PCS', 840, 840, 'company-13', 'GIESSE', 'TWIN CATCH - EURO GROOVE  9005 ', '87', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:21', '0'),
+(26, 'AT 02030000K', NULL, NULL, NULL, 'PCS', 199, 199, 'company-13', 'GIESSE', 'FRIZ OPENING LIMIT. ARM  RAW   ', '106', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:21', '0'),
+(27, 'AT 02040000K', NULL, NULL, NULL, 'PCS', 147, 147, 'company-13', 'GIESSE', 'LONG ARM RALLENTY MM 250 CP    ', '54', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:21', '0'),
+(28, 'AT 0205100001', NULL, NULL, NULL, 'PCS', 877, 877, 'company-13', 'GIESSE', 'HINGE FOR VASISTAS C/GASK CP   ', '81', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:21', '0'),
+(29, 'AT 02074500', NULL, NULL, NULL, 'PCS', 499, 499, 'company-13', 'GIESSE', 'TOTEM BOLT CHANNAL 14X18  9005 ', '42', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:21', '0'),
+(30, 'AT 02081410', NULL, NULL, NULL, 'PCS', 100, 100, 'company-13', 'GIESSE', 'MAYA DOOR BOLT L.220 MM   9010 ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:21', '0'),
+(31, 'AT 02081500', NULL, NULL, NULL, 'PCS', 250, 250, 'company-13', 'GIESSE', 'MAYA DOOR BOLT L.220 MM   9005 ', '106', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:21', '0'),
+(32, 'AT 02125010', NULL, NULL, NULL, 'PCS', 2000, 2000, 'company-13', 'GIESSE', 'GIAP FLUSH BOLT    NY.NE       ', '57', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:21', '0'),
+(33, 'AT 02150010', NULL, NULL, NULL, 'PCS', 437, 437, 'company-13', 'GIESSE', 'PESOS FLUSH BOLT FOR DOORNY.NE ', '57', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:21', '0'),
+(34, 'AT 02158000', NULL, NULL, NULL, 'PCS', 500, 500, 'company-13', 'GIESSE', 'SAFETY TERMINAL FOR 2150   RAW ', '106', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:21', '0'),
+(35, 'AT 02262000', NULL, NULL, NULL, 'PCS', 3900, 3900, 'company-13', 'GIESSE', 'CONNECTION BLOCK - GS888 CREMO ', '57', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:21', '0'),
+(36, 'AT 02270000', NULL, NULL, NULL, 'PCS', 7960, 7960, 'company-13', 'GIESSE', 'GIESSE CLOSING KIT             ', '39', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:21', '0'),
+(37, 'AT 02409000', NULL, NULL, NULL, 'PCS', 500, 500, 'company-13', 'GIESSE', 'EXT.OPEN.KIT UNICA SYSTEM SLID ', '57/63', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:21', '0'),
+(38, 'AT 02422005', NULL, NULL, NULL, 'PCS', 1500, 1500, 'company-13', 'GIESSE', 'MASTER PLUS HANDLE (PAIR)      ', '76', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:21', '0'),
+(39, 'AT 02422410', NULL, NULL, NULL, 'PCS', 1000, 1000, 'company-13', 'GIESSE', 'MASTER PLUS HANDLE (PAIR) 9010 ', '88', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:21', '0'),
+(40, 'AT 02422500', NULL, NULL, NULL, 'PCS', 998, 998, 'company-13', 'GIESSE', 'MASTER PLUS HANDLE (PAIR) 9005 ', '55', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:21', '0'),
+(41, 'AT 02563005', NULL, NULL, NULL, 'PCS', 1000, 1000, 'company-13', 'GIESSE', 'KORA DOOR HANDLE (PAIR)        ', '43', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:21', '0'),
+(42, 'AT 02563410', NULL, NULL, NULL, 'PCS', 500, 500, 'company-13', 'GIESSE', 'KORA DOOR HANDLE (PAIR) 9010   ', '94', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:21', '0'),
+(43, 'AT 02563500', NULL, NULL, NULL, 'PCS', 499, 499, 'company-13', 'GIESSE', 'KORA DOOR HANDLE (PAIR) 9005   ', '94', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:22', '0'),
+(44, 'AT 02792005', NULL, NULL, NULL, 'PCS', 999, 999, 'company-13', 'GIESSE', 'PRIMA HANDLE PLUS (PAIR)       ', '100', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:22', '0'),
+(45, 'AT 02792410', NULL, NULL, NULL, 'PCS', 500, 500, 'company-13', 'GIESSE', 'PRIMA HANDLE PLUS (PAIR)  9010 ', '73', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:22', '0'),
+(46, 'AT 02792500', NULL, NULL, NULL, 'PCS', 10329, 10329, 'company-13', 'GIESSE', 'PRIMA HANDLE PLUS (PAIR)  9005 ', '53', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:22', '0'),
+(47, 'AT 02800000K', NULL, NULL, NULL, 'PCS', 200, 200, 'company-13', 'GIESSE', 'GIESSE FRIZ WINDOW STAY        ', '65', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:22', '0'),
+(48, 'AT 03050005', NULL, NULL, NULL, 'PCS', 250, 250, 'company-13', 'GIESSE', 'INSIDE PULLING HANDLE SQUARED  ', '84', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:22', '0'),
+(49, 'AT 03050500', NULL, NULL, NULL, 'PCS', 111, 111, 'company-13', 'GIESSE', 'INSIDE PULLING HANDLE SQUARED  ', '97', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:22', '0'),
+(50, 'AT 03115000', NULL, NULL, NULL, 'PCS', 499, 499, 'company-13', 'GIESSE', 'CARRERA FIXED PULLEY  (4 PCS)  ', '63', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:22', '0'),
+(51, 'AT 03116000', NULL, NULL, NULL, 'PCS', 199, 199, 'company-13', 'GIESSE', 'CARRERA2 ADJUST. PULLEY (4 PCS ', '100', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:22', '0'),
+(52, 'AT 03132000', NULL, NULL, NULL, 'PCS', 499, 499, 'company-13', 'GIESSE', 'CARRERA FIXED PULLEY (4 PCS)   ', '84', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:22', '0'),
+(53, 'AT 0333100001', NULL, NULL, NULL, 'PCS', 12504, 12504, 'company-13', 'GIESSE', 'BRIO EVO BIG NIB               ', '45', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:22', '0'),
+(54, 'AT 03336000', NULL, NULL, NULL, 'PCS', 13932, 13932, 'company-13', 'GIESSE', 'GIESSE STEEL C-P               ', '46', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:22', '0'),
+(55, 'AT 03336000L', NULL, NULL, NULL, 'PCS', 699, 699, 'company-13', 'GIESSE', 'STAINLESS STEELE COUNTERPLATE  ', '53', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:22', '0'),
+(56, 'AT 03337000', NULL, NULL, NULL, 'PCS', 2000, 2000, 'company-13', 'GIESSE', 'ZAMAK COUNTERPLATE             ', '106', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:22', '0'),
+(57, 'AT 03529000', NULL, NULL, NULL, 'PCS', 9998, 9998, 'company-13', 'GIESSE', 'FIXED PULLEY 1 WHEEL           ', '92', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:22', '0'),
+(58, 'AT 03539000', NULL, NULL, NULL, 'PCS', 13498, 13498, 'company-13', 'GIESSE', 'FIXED PULLEY 1 WHEEL DIAMETER  ', '43', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:22', '0'),
+(59, 'AT 04020000K', NULL, NULL, NULL, 'PCS', 200, 200, 'company-13', 'GIESSE', 'ANGLE TRANSMISSION FUTURA      ', '106', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:22', '0'),
+(60, 'AT 04030000K', NULL, NULL, NULL, 'PCS', 5900, 5900, 'company-13', 'GIESSE', 'ADJUSTABLE LOCKING PAWL        ', '53', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:22', '0'),
+(61, 'AT 04099000001', NULL, NULL, NULL, 'PCS', 1000, 1000, 'company-13', 'GIESSE', 'ROD DRIVE DEVICE - PIN 18,5 MM ', '53', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:22', '0'),
+(62, 'AT 04339000', NULL, NULL, NULL, 'PCS', 1000, 1000, 'company-13', 'GIESSE', 'GIESSE ARM T1 CLASSIC 80 Kg    ', '82', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:22', '0'),
+(63, 'AT 04340000', NULL, NULL, NULL, 'PCS', 1898, 1898, 'company-13', 'GIESSE', 'ARM T2 CLASSIC MICROVENTILATIO ', '42', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:22', '0'),
+(64, 'AT 0461400001', NULL, NULL, NULL, 'PCS', 499, 499, 'company-13', 'GIESSE', 'LOCK WITH LATCH AND BOLT-BACKS ', '77', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:22', '0'),
+(65, 'AT 04617000', NULL, NULL, NULL, 'PCS', 300, 300, 'company-13', 'GIESSE', 'LOCK W/ ROLLER&BOLT BACKSET 30 ', '90', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:22', '0'),
+(66, 'AT 0462800001', NULL, NULL, NULL, 'PCS', 148, 148, 'company-13', 'GIESSE', 'DOOR LOCK BACKSET 35 MM        ', '30/63', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:22', '0'),
+(67, 'AT 04630000', NULL, NULL, NULL, 'PCS', 200, 200, 'company-13', 'GIESSE', 'DOOR LOCK STRIKERPLATE         ', '106', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:22', '0'),
+(68, 'AT 04639000', NULL, NULL, NULL, 'PCS', 200, 200, 'company-13', 'GIESSE', 'UNIVERSAL COUNTERPLATE FOR LOC ', '106', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:22', '0'),
+(69, 'AT 0465800001', NULL, NULL, NULL, 'PCS', 200, 200, 'company-13', 'GIESSE', 'FLAT SQUADRE COUNTERPLATE      ', '106', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:22', '0'),
+(70, 'AT 04704000', NULL, NULL, NULL, 'PCS', 2598, 2598, 'company-13', 'GIESSE', 'T/T LOCKING MECHANISM          ', '47', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:22', '0'),
+(71, 'AT 04739005', NULL, NULL, NULL, 'PCS', 1000, 1000, 'company-13', 'GIESSE', 'GIESSE CLASSIC T/T HINGE 80kG  ', '79', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:22', '0'),
+(72, 'AT 04739410', NULL, NULL, NULL, 'PCS', 1000, 1000, 'company-13', 'GIESSE', 'CLASSIC TILT/TURN HINGE 3D 80  ', '67', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:22', '0'),
+(73, 'AT 04739500', NULL, NULL, NULL, 'PCS', 898, 898, 'company-13', 'GIESSE', 'CLASSIC TILT/TURN HINGE 3D 80  ', '71', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:22', '0'),
+(74, 'AT 050070051', NULL, NULL, NULL, 'PCS', 1500, 1500, 'company-13', 'GIESSE', 'OFF SET EURO CW2 CREMONE-R. HA ', '71', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:22', '0'),
+(75, 'AT 050074101', NULL, NULL, NULL, 'PCS', 499, 499, 'company-13', 'GIESSE', 'OFF SET EURO CW2 CREMONE-R. HA ', '89', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:22', '0'),
+(76, 'AT 050075001', NULL, NULL, NULL, 'PCS', 0, 0, 'company-13', 'GIESSE', 'OFF SET EURO CW2 CREMONE-R. HA ', '71', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:22', '0'),
+(77, 'AT 05160005V', NULL, NULL, NULL, 'PCS', 470, 470, 'company-13', 'GIESSE', 'DOMINA HP-2 WINGS C/C 62,5     ', '54', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:22', '0'),
+(78, 'AT 05160410V', NULL, NULL, NULL, 'PCS', 500, 500, 'company-13', 'GIESSE', 'DOMINA HP-2 WINGS C/C 62,5     ', '92', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:22', '0'),
+(79, 'AT 05160500V', NULL, NULL, NULL, 'PCS', 498, 498, 'company-13', 'GIESSE', 'DOMINA HP-2 WINGS C/C 62,5     ', '70', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:23', '0'),
+(80, 'AT 05174005V', NULL, NULL, NULL, 'PCS', 452, 452, 'company-13', 'GIESSE', 'DOMINA HP-2 WINGS C/C 62,5 STE ', '46', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:23', '0'),
+(81, 'AT 05174410V', NULL, NULL, NULL, 'PCS', 470, 470, 'company-13', 'GIESSE', 'DOMINA HP-2 WINGS C/C 62,5 STE ', '77', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:23', '0'),
+(82, 'AT 05174500V', NULL, NULL, NULL, 'PCS', 449, 449, 'company-13', 'GIESSE', 'DOMINA HP-2 WINGS C/C 62,5 STE ', '92/91', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:23', '0'),
+(83, 'AT 0520000001', NULL, NULL, NULL, 'PCS', 2890, 2890, 'company-13', 'GIESSE', 'COUNTERPLATE KIT DOMINA 2 WING ', '69', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:23', '0'),
+(84, 'AT 06004005', NULL, NULL, NULL, 'PCS', 998, 998, 'company-13', 'GIESSE', 'BRIO EVO HANDLE SQUARED        ', '76', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:23', '0'),
+(85, 'AT 06004410', NULL, NULL, NULL, 'PCS', 500, 500, 'company-13', 'GIESSE', 'BRIO EVO HANDLE SQUARED        ', '80', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:23', '0'),
+(86, 'AT 06004500', NULL, NULL, NULL, 'PCS', 681, 681, 'company-13', 'GIESSE', 'BRIO EVO HANDLE SQUARED        ', '62', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:23', '0'),
+(87, 'AT 06005005', NULL, NULL, NULL, 'PCS', 499, 499, 'company-13', 'GIESSE', 'BRIO EVO HANDLE WITH KEY SQUAR ', '62', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:23', '0'),
+(88, 'AT 06005500', NULL, NULL, NULL, 'PCS', 367, 367, 'company-13', 'GIESSE', 'BRIO EVO HANDLE WITH KEY SQUAR ', '62', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:23', '0'),
+(89, 'AT 0603800501', NULL, NULL, NULL, 'PCS', 4999, 4999, 'company-13', 'GIESSE', 'BRIO MINI EVO SQUARED          ', '40', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:23', '0'),
+(90, 'AT 0603841001', NULL, NULL, NULL, 'PCS', 2000, 2000, 'company-13', 'GIESSE', 'BRIO MINI EVO SQUARED 9010     ', '45', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:23', '0'),
+(91, 'AT 0603850001', NULL, NULL, NULL, 'PCS', 2320, 2320, 'company-13', 'GIESSE', 'BRIO MINI EVO SQUARED 9005     ', '65', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:23', '0'),
+(92, 'AT 06168006', NULL, NULL, NULL, 'PCS', 1000, 1000, 'company-13', 'GIESSE', 'DOMINA CLASSIC INDUSTRIAL 2W   ', '86', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:23', '0'),
+(93, 'AT 06168410', NULL, NULL, NULL, 'PCS', 499, 499, 'company-13', 'GIESSE', 'DOMINA CLASSIC INDUSTRIAL 2W   ', '86', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:23', '0'),
+(94, 'AT 06168500', NULL, NULL, NULL, 'PCS', 500, 500, 'company-13', 'GIESSE', 'DOMINA CLASSIC INDUSTRIAL 2W   ', '80', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:23', '0'),
+(95, 'AT 0763100001', NULL, NULL, NULL, 'PCS', 477, 477, 'company-13', 'GIESSE', 'CENTRAL LOCK FACEPLATE BACKSET ', '90', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:23', '0'),
+(96, 'AT 07680000          ', NULL, NULL, NULL, 'PCS', 999, 999, 'company-13', 'GIESSE', 'EUROPROFILE CYLINDER (31-31)   ', '41', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:23', '0'),
+(97, 'AT 07682000', NULL, NULL, NULL, 'PCS', 499, 499, 'company-13', 'GIESSE', 'TOTEM BOLT CHANNAL 14X18  9005 ', '87', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:23', '0'),
+(98, 'AT 07683000', NULL, NULL, NULL, 'PCS', 499, 499, 'company-13', 'GIESSE', 'EUROPROFILE CYLINDER (31/41)   ', '106', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:23', '0'),
+(99, 'AT 08349000', NULL, NULL, NULL, 'PCS', 203, 203, 'company-13', 'GIESSE', 'ARM GS HD-TS HUNG 10\"-TYPE-CP  ', '41', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:23', '0'),
+(100, 'AT 08351000', NULL, NULL, NULL, 'PCS', 299, 299, 'company-13', 'GIESSE', 'ARM GS HD- TOP HUNG 22\" - TYPE ', '74', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:23', '0'),
+(101, 'AT D0603750', NULL, NULL, NULL, 'PCS', 5000, 5000, 'company-13', NULL, 'giesse nib for frontal adjustm ', '103', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:23', '0'),
+(102, 'AT 08352000', NULL, NULL, NULL, 'PCS', 101, 101, 'company-13', 'GIESSE', 'ARM GS HD-TOP HUNG 28\"-TYPE EG ', '87', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:23', '0'),
+(103, 'AT 08350000', NULL, NULL, NULL, 'PCS', 0, 0, 'company-13', 'GIESSE', 'ARM GS HD-TS HUNG 16\"-TYPE EGR', '87', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:23', '0'),
+(104, 'AT 03175000', NULL, NULL, NULL, 'PCS', 999, 999, 'company-13', 'GIESSE', 'FIXED PULLEY 1 WHEEL', '18', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:23', '0'),
+(105, 'AT 08534000NARMS', NULL, NULL, NULL, 'PCS', 504, 504, 'company-13', 'GIESSE', 'GS HD-TOP HUNG-10\"-TYPE P-COUP', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:23', '0'),
+(106, 'AT 08535000NARMS', NULL, NULL, NULL, 'PCS', 504, 504, 'company-13', 'GIESSE', 'GS HD-TOP HUNG-12\"-TYPE P-COUP', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:23', '0'),
+(107, 'AT 08536000NARMS', NULL, NULL, NULL, 'PCS', 504, 504, 'company-13', 'GIESSE', 'GS HD-TOP HUNG-14\"-TYPE P-COUP', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:23', '0'),
+(108, 'AT 08537000NARMS', NULL, NULL, NULL, 'PCS', 952, 952, 'company-13', 'GIESSE', 'GS HD-TOP HUNG-16\"-TYPE P-COUP', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:23', '0'),
+(109, 'AT 08538000NARMS', NULL, NULL, NULL, 'PCS', 82, 82, 'company-13', 'GIESSE', 'GS HD-TOP HUNG-18\"-TYPE P-COU', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:23', '0'),
+(110, 'AT 08540000NARMS', NULL, NULL, NULL, 'PCS', 1986, 1986, 'company-13', 'GIESSE', 'GS HD-TOP HUNG-22\"-TYPE P-COUP', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:23', '0'),
+(111, 'AT 08541000NARMS', NULL, NULL, NULL, 'PCS', 2004, 2004, 'company-13', 'GIESSE', 'GS HD-TOP HUNG-24\"-TYPE P-COUP', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:23', '0'),
+(112, 'AT 08542000NARMS', NULL, NULL, NULL, 'PCS', 2004, 2004, 'company-13', 'GIESSE', 'GS HD-TOP HUNG-28\"-TYPE P-COUP', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:23', '0'),
+(113, 'AT 20-3-20-00-000', NULL, NULL, NULL, 'PCS', 2, 2, 'company-13', NULL, 'Stainless Steel Adjustable Str ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:23', '0'),
+(114, 'AT 210MIS', NULL, NULL, NULL, 'PCS', 288, 288, 'company-13', NULL, '10\" S-2000 w/Movable Integral  ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:24', '0'),
+(115, 'AT 216MIS', NULL, NULL, NULL, 'PCS', 1996, 1996, 'company-13', NULL, '16\" S-2000 w/Movable Integral  ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:24', '0'),
+(116, 'AT 220SG', NULL, NULL, NULL, 'PCS', 5168, 5168, 'company-13', NULL, '20\" SG S-2000 4-Bar Hinge      ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:24', '0'),
+(117, 'AT 224SG', NULL, NULL, NULL, 'PCS', 5032, 5032, 'company-13', NULL, '24\" SG S-2000 4-Bar Hinge      ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:24', '0'),
+(118, 'AT 228SG', NULL, NULL, NULL, 'PCS', 1704, 1704, 'company-13', NULL, '28\" SG S-2000 4-Bar Hinge      ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:24', '0'),
+(119, 'AT 717705H', NULL, NULL, NULL, 'PCS', 2136, 2136, 'company-13', NULL, 'SINGLE WING TURN AND TILT WIND ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:24', '0'),
+(120, 'AT 719010H MOD', NULL, NULL, NULL, 'PCS', 4205, 4205, 'company-13', NULL, 'STOP WING ARM                  ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:24', '0'),
+(121, 'AT 730033', NULL, NULL, NULL, 'PCS', 1796, 1796, 'company-13', NULL, 'JAMB ALIGNMENT CORNER JOINT    ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:24', '0'),
+(122, 'AT 16060KE NICKEL', NULL, NULL, NULL, '  set   ', 7484, 7484, 'company-13', NULL, 'Cylinder60mm(30-30)            ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:24', '0'),
+(123, 'AT 6321MF BLACK', NULL, NULL, NULL, 'PCS', 93, 93, 'company-13', NULL, 'Set of economical doo handles  ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:24', '0'),
+(124, 'AT 6321MF MILL FINISH', NULL, NULL, NULL, 'PCS', 193, 193, 'company-13', NULL, 'Set of economical doo handles  ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:24', '0'),
+(125, 'AT 6321LE WHITE', NULL, NULL, NULL, 'PCS', 94, 94, 'company-13', NULL, 'Set of economical doo handles  ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:24', '0'),
+(126, 'AT 6340MF BEIGE', NULL, NULL, NULL, 'PCS', 14, 14, 'company-13', NULL, 'Set of door handles with narro ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:24', '0'),
+(127, 'AT 6340M BLACK', NULL, NULL, NULL, 'PCS', 15, 15, 'company-13', NULL, 'Set of door handles with narro ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:24', '0'),
+(128, 'AT 6340 MILL FINISH', NULL, NULL, NULL, 'PCS', 15, 15, 'company-13', NULL, 'Set of door handles with narro ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:24', '0'),
+(129, 'AT 6340L WHITE', NULL, NULL, NULL, 'PCS', 41, 41, 'company-13', NULL, 'Set of door handles with narro ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:24', '0'),
+(130, 'AT 6900ME BLACK', NULL, NULL, NULL, 'PCS', 45, 45, 'company-13', NULL, 'Cremon  Handle  for  hinged  & ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:24', '0'),
+(131, 'AT 6900L WHITE', NULL, NULL, NULL, 'PCS', 42, 42, 'company-13', NULL, 'Cremon  Handle  for  hinged  & ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:24', '0'),
+(132, 'AT 7610ME BLACK', NULL, NULL, NULL, 'PCS', 94, 94, 'company-13', NULL, 'Lock KLIKLOK without cylinder  ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:24', '0'),
+(133, 'AT 7610LE WHITE', NULL, NULL, NULL, 'PCS', 135, 135, 'company-13', NULL, 'Lock KLIKLOK without cylinder  ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:24', '0'),
+(134, 'AT 7710ME BLACK', NULL, NULL, NULL, '  set   ', 45, 45, 'company-13', NULL, 'Lock ?LIKLOK with cylinder     ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:24', '0'),
+(135, 'AT 7710LE WHITE', NULL, NULL, NULL, '  set   ', 150, 150, 'company-13', NULL, 'Lock ?LIKLOK with cylinder     ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:24', '0'),
+(136, 'AT 790905H', NULL, NULL, NULL, 'PCS', 17, 17, 'company-13', NULL, 'CP OF HANDLE FOR DOORS BLACK   ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:24', '0'),
+(137, 'AT 79G000', NULL, NULL, NULL, '  pk    ', 0, 0, 'company-13', NULL, 'HANDLE + STRIKER + NIB         ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:24', '0'),
+(138, 'AT 800933', NULL, NULL, NULL, 'mtr', 34, 34, 'company-13', NULL, 'BRUSH GASKET FOR DOOR          ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:24', '0'),
+(139, 'AT 809120', NULL, NULL, NULL, 'mtr', 0, 0, 'company-13', NULL, 'INSIDE GLASS GASKET 3-4 MM IW  ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:24', '0'),
+(140, 'AT 809121', NULL, NULL, NULL, 'mtr', 0, 0, 'company-13', NULL, 'INSIDE GLASS GASKET 4.5-6MM IW ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:24', '0'),
+(141, 'AT 809420L6000', NULL, NULL, NULL, 'mtr', 576, 576, 'company-13', NULL, 'SPACER FOR MULLIONS & TRANSOMS ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:24', '0'),
+(142, 'AT 809431', NULL, NULL, NULL, 'mtr', 0, 0, 'company-13', NULL, 'EXTERNAL GLASS GASKET IW BLACK ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:24', '0'),
+(143, 'AT 809508L5500', NULL, NULL, NULL, '  bar   ', 0, 0, 'company-13', NULL, 'SPACER FOR MULLION&RTANSOM COR ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:24', '0'),
+(144, 'AT 809508L6000', NULL, NULL, NULL, 'mtr', 36, 36, 'company-13', NULL, 'SPACER FOR MULLION&RTANSOM COR ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:24', '0'),
+(145, 'AT 809606L4000', NULL, NULL, NULL, 'PCS', 0, 0, 'company-13', NULL, 'EXTERNAL FRMAE PVC-LENGTH 4 M  ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:24', '0'),
+(146, 'AT 809606L6000', NULL, NULL, NULL, '  bar   ', 0, 0, 'company-13', NULL, 'GUARNIZIONE CAPPOTTO TERMICO   ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:24', '0'),
+(147, 'AT 809627', NULL, NULL, NULL, 'mtr', 0, 0, 'company-13', NULL, 'INTERNAL OVERLAP GASKET IW     ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:24', '0'),
+(148, 'AT 89G093', NULL, NULL, NULL, 'mtr', 0, 0, 'company-13', NULL, 'INTERLOCK PVC GASKET           ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:24', '0'),
+(149, 'AT 89P000L4900', NULL, NULL, NULL, 'PCS', 0, 0, 'company-13', NULL, 'PVC STABILIZER AND STOPPER LEN ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:24', '0'),
+(150, 'AT 90120A CHROME', NULL, NULL, NULL, 'PCS', 0, 0, 'company-13', NULL, 'Security Mortice Lock 20/54mm  ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:24', '0'),
+(151, 'AT 90220A BLACK', NULL, NULL, NULL, 'PCS', 3, 3, 'company-13', NULL, 'Security  Mortice  Lock 20mm   ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:24', '0'),
+(152, 'AT 91130C CHROME', NULL, NULL, NULL, 'PCS', 1209, 1209, 'company-13', NULL, 'Security adjustable cylinder   ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:25', '0'),
+(153, 'AT 91130GC BEIGE', NULL, NULL, NULL, 'PCS', 83, 83, 'company-13', NULL, 'Security adjustable cylinder   ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:25', '0'),
+(154, 'AT 91130LC WHITE', NULL, NULL, NULL, 'PCS', 3320, 3320, 'company-13', NULL, 'Security adjustable            ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:25', '0'),
+(155, 'AT 91130MC BLACK', NULL, NULL, NULL, 'PCS', 2695, 2695, 'company-13', NULL, 'Security adjustable cylinder   ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:25', '0'),
+(156, 'AT 92120A CHROME', NULL, NULL, NULL, 'PCS', 4, 4, 'company-13', NULL, 'Roller  Lock  20mm  with  54mm ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:25', '0'),
+(157, 'AT 92120LA WHITE', NULL, NULL, NULL, 'PCS', 0, 0, 'company-13', NULL, 'Roller  Lock  20mm  with  54mm ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:25', '0'),
+(158, 'AT 92220A BLACK', NULL, NULL, NULL, 'PCS', 2, 2, 'company-13', NULL, 'Roller  Lock  20mm  with  54mm ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:25', '0'),
+(159, 'AT 95016E CHROME', NULL, NULL, NULL, 'PCS', 323, 323, 'company-13', NULL, 'Security Sliding Hook Lock 16m ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:25', '0'),
+(160, 'AT 6910E POLYAMIDE NYLON PA6', NULL, NULL, NULL, 'PCS', 98, 98, 'company-13', NULL, 'Locking Kit for hinged windows', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:25', '0'),
+(161, 'AT CML009- G34.5K24.5C8.5X9J156', NULL, NULL, NULL, 'PCS', 6719, 6719, 'company-13', NULL, 'Aluminum alloy Carbon steel+We ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:25', '0'),
+(162, 'AT DIN 934 A4 M10', NULL, NULL, NULL, 'PCS', 103, 103, 'company-13', NULL, 'Hexagon nut, SS 316, M10       ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:25', '0'),
+(163, 'AT DIN 934 A4 M12', NULL, NULL, NULL, 'PCS', 64, 64, 'company-13', NULL, 'Hexagon nut, SS 316, M12       ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:25', '0'),
+(164, 'AT FK-C', NULL, NULL, NULL, 'PCS', 26, 26, 'company-13', NULL, 'ANTI-STRIKE BLOCK AUXILIARIES  ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:25', '0'),
+(165, 'AT LBHY22', NULL, NULL, NULL, 'PCS', 5, 5, 'company-13', NULL, 'PIVOT HINGE,ALUMINUM ALLOY     ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:25', '0'),
+(166, 'AT M6X16-256', NULL, NULL, NULL, 'PCS', 50321, 50321, 'company-13', NULL, 'ALLEN BOLT GR BALCK            ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:25', '0'),
+(167, 'AT NDPX-2A', NULL, NULL, NULL, 'PCS', 18, 18, 'company-13', NULL, 'HOPPER WINDOW RESTRICTOR       ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:25', '0'),
+(168, 'AT NDPX20L-R', NULL, NULL, NULL, 'PCS', 25479, 25479, 'company-13', NULL, 'Friction Arm Carbon Steel, ele', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:25', '0'),
+(169, 'AT R005007E', NULL, NULL, NULL, 'mtr', 5000, 5000, 'company-13', NULL, 'Glazing Gasket 3.5 mmEPDM RUBBER PROFILE-HIBP1193/02', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:25', '0'),
+(170, 'AT SL-330-WS-DOW CORNING 813C-CHAMPGAN', NULL, NULL, NULL, 'tb', 7400, 7400, 'company-13', NULL, 'WEATHER SEALANT -CHAMPGAN      ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:25', '0'),
+(171, 'AT SL-AS111-BLACK', NULL, NULL, NULL, 'tb', 70, 70, 'company-13', NULL, 'WEATHER SEALANT BLACK          ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:25', '0'),
+(172, 'AT SS601 BY 5000', NULL, NULL, NULL, 'tb', 31, 31, 'company-13', NULL, 'Construction & Glazing Silicon ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:25', '0'),
+(173, 'AT SS601-BY3334', NULL, NULL, NULL, 'tb', 21052, 21052, 'company-13', NULL, 'Construction & Glazing Silicon ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:25', '0'),
+(174, 'AT T-FDK01', NULL, NULL, NULL, 'PCS', 18, 18, 'company-13', NULL, 'ANTI THEFT BLOCK, AUXILIARIES  ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:25', '0'),
+(175, 'AT TKS02', NULL, NULL, NULL, 'PCS', 7, 7, 'company-13', NULL, 'LOCK HANDLE                    ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:25', '0'),
+(176, 'AT TLK-04C', NULL, NULL, NULL, 'PCS', 68573, 68573, 'company-13', NULL, 'LOCK HOOK                      ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:25', '0'),
+(177, 'AT V31200L6000', NULL, NULL, NULL, 'PCS', 0, 0, 'company-13', NULL, 'SLIDING FRAME THERMAL SHIELD   ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:25', '0'),
+(178, 'AT-ACH-BOLT-M10', NULL, NULL, NULL, 'PCS', 59, 59, 'company-13', NULL, 'ANCHOR BOLT M10X95             ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:25', '0'),
+(179, 'AT-FSM-SLV-18X14-510', NULL, NULL, NULL, 'rol', 158, 158, 'company-13', NULL, 'ALUMINUM MESH 18X14 -510 WIRE ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:25', '0'),
+(180, 'AT-FSM-SLV-18X14-710', NULL, NULL, NULL, 'rol', 68, 68, 'company-13', NULL, 'ALUMINUM MESH 18X14 -710 WIRE ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:25', '0'),
+(181, 'AT-FSM-SLV-18X14-910', NULL, NULL, NULL, 'rol', 180, 180, 'company-13', NULL, 'ALUMINUM MESH 18X14 -910 WIRE ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:25', '0'),
+(182, 'AT-FSM-SLV-18X14-1070', NULL, NULL, NULL, 'rol', 49, 49, 'company-13', NULL, 'ALUMINUM MESH 18X14 -1070 WIRE ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:25', '0'),
+(183, 'AT-FSM-SLV-18X14-1220', NULL, NULL, NULL, 'rol', 438, 438, 'company-13', NULL, 'ALUMINUM MESH 18X14-1220 WIRE ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:25', '0'),
+(184, 'AT-FSM-SLV-18X14-1520', NULL, NULL, NULL, 'rol', 2000, 2000, 'company-13', NULL, 'ALUMINUM MESH 18X14 -1520 WIRE ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:25', '0'),
+(185, 'AT-FSM-SLV-18X14-1830', NULL, NULL, NULL, 'rol', 207, 207, 'company-13', NULL, 'ALUMINUM MESH 18X14 -1830 WIRE ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:25', '0'),
+(186, 'AT-FSM-SLV-18X14-2000', NULL, NULL, NULL, 'rol', 50, 50, 'company-13', NULL, 'ALUMINUM MESH 18X14 -2000 WIRE ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:25', '0'),
+(187, 'AT-FSM-SLV-18X16-1220', NULL, NULL, NULL, 'rol', 393, 393, 'company-13', NULL, 'ALUMINUM MESH 18X16-1220 WIRE ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:25', '0'),
+(188, 'AT-FSM-SLV-18X16-1830', NULL, NULL, NULL, 'rol', 56, 56, 'company-13', NULL, 'ALUMINUM MESH 18X16-1830 WIRE ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:25', '0'),
+(189, 'AT-MUR-AWR-001', NULL, NULL, NULL, 'PCS', 76, 76, 'company-13', NULL, 'STAY ARM-RIGHT                 ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:25', '0'),
+(190, 'AT-PIN-SLD-76-001', NULL, NULL, NULL, 'PCS', 15514, 15514, 'company-13', NULL, 'Button For Corner Joint        ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:25', '0'),
+(191, 'AT-STAC-A0508202', NULL, NULL, NULL, 'PCS', 181, 181, 'company-13', NULL, 'SIRIUS DOOR HANDLE SET - BLACK ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:25', '0'),
+(192, 'AT-THRO-BOLT-M10', NULL, NULL, NULL, 'PCS', 31, 31, 'company-13', NULL, 'THROGH BOLT  M10 x 110 Hex HD  ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:25', '0'),
+(193, 'AT 00-2-00-00-001', NULL, NULL, NULL, 'PCS', 0, 0, 'company-13', NULL, 'Shim 5 mm', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:25', '0'),
+(194, 'AT 00-2-00-00-002', NULL, NULL, NULL, 'PCS', 4000, 4000, 'company-13', NULL, 'Shim 3 mm', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:25', '0'),
+(195, 'AT 00-2-00-00-003', NULL, NULL, NULL, 'PCS', 1700, 1700, 'company-13', NULL, 'Shim 2 mm', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:25', '0'),
+(196, 'AT 00-2-00-00-004', NULL, NULL, NULL, 'PCS', 5000, 5000, 'company-13', NULL, 'Shim 4 mm', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:25', '0'),
+(197, 'AT 00-2-00-00-005', NULL, NULL, NULL, 'PCS', 8000, 8000, 'company-13', 'SCREW', 'Shim 1 mm', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:25', '0'),
+(198, 'AT 00-4-07-48-050', NULL, NULL, NULL, 'PCS', 26924, 26924, 'company-13', 'SCREW', 'M 4.8 X 50 DIN 7504K           ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:25', '0'),
+(199, 'AT 00-4-08-48-038', NULL, NULL, NULL, 'PCS', 170158, 170158, 'company-13', 'SCREW', 'M 4.8 X 38  SCREW DIN 7504K    ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:25', '0'),
+(200, 'AT 00-4-08-48-060', NULL, NULL, NULL, 'PCS', 39400, 39400, 'company-13', 'SCREW', '4.8 x 60 PHSSSTS               ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:25', '0'),
+(201, 'AT 00-4-10-39-016', NULL, NULL, NULL, 'PCS', 49200, 49200, 'company-13', 'SCREW', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:25', '0'),
+(202, 'AT 00-4-11-48-016', NULL, NULL, NULL, 'PCS', 318036, 318036, 'company-13', 'SCREW', 'M 4.8 X 16  DIN 7981           ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:25', '0'),
+(203, 'AT 00-4-11-55-038', NULL, NULL, NULL, 'PCS', 303980, 303980, 'company-13', 'SCREW', 'M 5.5 X 38mm PAN HEAD SCREW    ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:25', '0'),
+(204, 'AT 00-4-11-55-045', NULL, NULL, NULL, 'PCS', 299528, 299528, 'company-13', 'SCREW', 'M 5.5 X 45mm PAN HEAD SCREW    ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:26', '0'),
+(205, 'AT 00-4-11-55-050', NULL, NULL, NULL, 'PCS', 257462, 257462, 'company-13', 'SCREW', 'M 5.5X50mm PAN HEAD SCREW      ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:26', '0'),
+(206, 'AT 00-4-11-55-060', NULL, NULL, NULL, 'PCS', 298185, 298185, 'company-13', 'SCREW', 'M 5.5 X 60M PRESSURE PLATE SC  ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:26', '0'),
+(207, 'AT 00-4-11-55-070', NULL, NULL, NULL, 'PCS', 300190, 300190, 'company-13', 'SCREW', 'M 5.5X70mm PAN HEAD SCREW      ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:26', '0'),
+(208, 'AT 00-4-11-55-080', NULL, NULL, NULL, 'PCS', 298590, 298590, 'company-13', 'SCREW', 'M 5.5 X 80mm PAN HEAD SCREW    ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:26', '0'),
+(209, 'AT 00-4-12-42-016', NULL, NULL, NULL, 'PCS', 1011990, 1011990, 'company-13', NULL, '4.2 x 16 FHSSSTS               ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:26', '0'),
+(210, 'AT 02-2-02-50-000', NULL, NULL, NULL, 'PCS', 96434, 96434, 'company-13', NULL, 'Glass Wedge                    ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:26', '0'),
+(211, 'AT 02-2-08-50-003', NULL, NULL, NULL, 'PCS', 11865, 11865, 'company-13', NULL, 'GLASS HOLDER FROM 28 TO 32 MM  ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:26', '0'),
+(212, 'AT 02-2-08-50-004', NULL, NULL, NULL, 'PCS', 1774, 1774, 'company-13', NULL, 'Glass Holder from 24 to 28mm   ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:26', '0'),
+(213, 'AT 02-2-09-50-003', NULL, NULL, NULL, 'PCS', 260, 260, 'company-13', NULL, 'CLEAT FOR TRANSOM 150 MM       ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:26', '0'),
+(214, 'AT 02-2-09-50-004', NULL, NULL, NULL, 'PCS', 246, 246, 'company-13', NULL, 'TRANSOM CLEAT 126MM            ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:26', '0'),
+(215, 'AT 02-2-09-50-006', NULL, NULL, NULL, 'PCS', 2069, 2069, 'company-13', NULL, 'Transom Cleat 76 mm For Transo', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:26', '0'),
+(216, 'AT 02-2-14-50-003', NULL, NULL, NULL, 'PCS', 6051, 6051, 'company-13', 'Gasket', 'PVC CUTTING PCS', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:26', '0'),
+(217, 'AT 03-1-01-00-002', NULL, NULL, NULL, 'mtr', 1600, 1600, 'company-13', 'Gasket', 'Outside Gasket                 ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:26', '0'),
+(218, 'AT 03-1-01-00-003', NULL, NULL, NULL, 'mtr', 600, 600, 'company-13', NULL, 'Inside Rubber Gasket           ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:26', '0'),
+(219, 'AT 03-1-01-00-005', NULL, NULL, NULL, '  mtr   ', 860, 860, 'company-13', NULL, 'Central Gasket                 ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:26', '0'),
+(220, 'AT 03-1-07-00-001', NULL, NULL, NULL, 'PCS', 64569, 64569, 'company-13', NULL, 'Glazing Bead Clip              ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:26', '0'),
+(221, 'AT 03-1-09-00-001', NULL, NULL, NULL, 'PCS', 7, 7, 'company-13', NULL, 'False Mullion End Cap          ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:26', '0'),
+(222, 'AT 03-2-05-50-001', NULL, NULL, NULL, 'PCS', 2555, 2555, 'company-13', 'Gasket', 'S/S ALIGNMENT CLEAT 09 MM      ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:26', '0'),
+(223, 'AT 05-1-01-50-003', NULL, NULL, NULL, 'mtr', 1425, 1425, 'company-13', 'Gasket', 'EPDM Gasket for framework rest ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:26', '0'),
+(224, 'AT J8002', NULL, NULL, NULL, 'mtr', 37100, 37100, 'company-13', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:26', '0'),
+(225, 'AT 08-1-01-00-001', NULL, NULL, NULL, 'mtr', 500, 500, 'company-13', NULL, 'EPDM Gasket for water          ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:26', '0'),
+(226, 'AT 09-1-04-50-001', NULL, NULL, NULL, 'mtr', 0, 0, 'company-13', NULL, 'INSULATOR FOR UP TO 24M (PVC)  ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:26', '0'),
+(227, 'AT 09-1-04-50-004', NULL, NULL, NULL, 'mtr', 15255, 15255, 'company-13', NULL, 'Thermal break profile PVC+60 s ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:26', '0'),
+(228, 'AT 09-1-04-50-005', NULL, NULL, NULL, 'mtr', 8103, 8103, 'company-13', 'Gasket', 'Thermal break profile PVC+60 s ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:26', '0'),
+(229, 'AT 10-1-03-50-002', NULL, NULL, NULL, 'mtr', 838, 838, 'company-13', NULL, 'MEGOL/60 gasket for water      ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:26', '0'),
+(230, 'AT 12-0-05-00-001', NULL, NULL, NULL, 'PCS', 9828, 9828, 'company-13', NULL, 'FUJI-2000 ALIGNMENT CORNER CLE ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:26', '0'),
+(231, 'AT 12-2-10-00-000', NULL, NULL, NULL, 'PCS', 8996, 8996, 'company-13', NULL, 'T-JOINT (MULLION- TRANSOM STOP ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:26', '0'),
+(232, 'AT 1276704- PF562 C/55 HS PFP-1MX100M', NULL, NULL, NULL, '  rl    ', 1676, 1676, 'company-13', NULL, 'PROTECTIVE FILM                ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:27', '0'),
+(233, 'AT 13-2-11-00-001', NULL, NULL, NULL, 'PCS', 12, 12, 'company-13', NULL, 'Double handle                  ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:27', '0'),
+(234, 'AT 13-2-12-00-001', NULL, NULL, NULL, 'PCS', 60, 60, 'company-13', NULL, '(Black) SLIM RAPID Adjust      ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:27', '0'),
+(235, 'AT 13-2-14-00-001', NULL, NULL, NULL, 'PCS', 12, 12, 'company-13', NULL, 'Aluminium shaped cylinder cove', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:27', '0'),
+(236, 'AT 13-2-16-52-001', NULL, NULL, NULL, 'PCS', 36, 36, 'company-13', NULL, 'Lift&Slide Safety Absorb Block ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:27', '0'),
+(237, 'AT 13-3-02-00-000', NULL, NULL, NULL, 'PCS', 4, 4, 'company-13', NULL, 'Cremone bolt with crank handle', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:27', '0'),
+(238, 'AT 13-3-03-52-005', NULL, NULL, NULL, 'PCS', 15, 15, 'company-13', NULL, 'Italia lift Slide Double Handl ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:27', '0'),
+(239, 'AT 13-3-04-00-001', NULL, NULL, NULL, 'PCS', 500, 500, 'company-13', NULL, 'Counterplate.Flat adjustable   ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:27', '0'),
+(240, 'AT 13-3-04-00-009', NULL, NULL, NULL, 'PCS', 90, 90, 'company-13', NULL, 'Adjustable Double Rod Junction ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:27', '0'),
+(241, 'AT 13-3-04-52-000', NULL, NULL, NULL, 'PCS', 13, 13, 'company-13', NULL, 'Counter Plate                  ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:27', '0'),
+(242, 'AT 13-3-05-00-005', NULL, NULL, NULL, 'PCS', 60, 60, 'company-13', NULL, 'New Big Hinge Int. 60 MM with  ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:27', '0'),
+(243, 'AT 13-3-05-00-014', NULL, NULL, NULL, 'PCS', 172, 172, 'company-13', NULL, 'VERTICAL ADJUSTER              ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:27', '0'),
+(244, 'AT 13-3-11-52-000', NULL, NULL, NULL, 'PCS', 19, 19, 'company-13', NULL, 'Lift & Slide Lock Kit          ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:27', '0'),
+(245, 'AT 13-3-12-52-000', NULL, NULL, NULL, 'PCS', 18, 18, 'company-13', NULL, 'Lift & Slide Rollers Kit       ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:27', '0'),
+(246, 'AT 13-3-14-74-001', NULL, NULL, NULL, 'PCS', 14, 14, 'company-13', NULL, 'Door Bumper for Sliding        ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:27', '0'),
+(247, 'AT 13-3-18-52-001', NULL, NULL, NULL, 'PCS', 10, 10, 'company-13', NULL, 'Italia Lift & slide Security   ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:27', '0'),
+(248, 'AT 14-1-04-52-000', NULL, NULL, NULL, 'mtr', 987, 987, 'company-13', 'Gasket', 'U PVC INTERLOCK', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:27', '0'),
+(249, 'AT 19-1-01-00-001', NULL, NULL, NULL, '  mtr   ', 16577, 16577, 'company-13', 'Gasket', 'Outer Glazing Gasket with stri ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:27', '0'),
+(250, 'AT 19-1-01-00-002', NULL, NULL, NULL, '  mtr   ', 8740, 8740, 'company-13', 'Gasket', 'Inner Glazing Gasket 6mm (EPDM ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:27', '0'),
+(251, 'AT 19-1-01-00-003', NULL, NULL, NULL, '  mtr   ', 7228, 7228, 'company-13', 'Gasket', 'Inner Glazing Gasket           ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:27', '0'),
+(252, 'AT 19-1-01-00-004', NULL, NULL, NULL, '  mtr   ', 32, 32, 'company-13', NULL, 'EPDM Threshold Gasket          ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:27', '0'),
+(253, 'AT 19-2-03-50-000', NULL, NULL, NULL, 'PCS', 36480, 36480, 'company-13', NULL, 'Toggle Wing                    ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:27', '0'),
+(254, 'AT 19-2-04-00-001', NULL, NULL, NULL, 'PCS', 345, 345, 'company-13', NULL, 'Corner Cleat 26.5 x 40 mm', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:27', '0'),
+(255, 'AT 19-2-04-00-002', NULL, NULL, NULL, 'PCS', 68, 68, 'company-13', NULL, 'Corner Cleat 19.0 x 40 mm      ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:27', '0'),
+(256, 'AT 19-2-04-00-003', NULL, NULL, NULL, 'PCS', 140, 140, 'company-13', NULL, 'Corner Cleat 8.1 x 40 mm       ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:27', '0'),
+(257, 'AT 19-2-04-00-004', NULL, NULL, NULL, 'PCS', 655, 655, 'company-13', NULL, 'Corner Cleat 8.4 x 15.7 mm     ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:27', '0'),
+(258, 'AT 19-2-04-00-005', NULL, NULL, NULL, 'PCS', 1750, 1750, 'company-13', NULL, 'Corner Cleat 19.0 x 15.7 mm    ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:27', '0'),
+(259, 'AT 19-2-04-00-006', NULL, NULL, NULL, 'PCS', 28, 28, 'company-13', NULL, 'Corner Cleat 26.5 X 15.7 mm', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:27', '0'),
+(260, 'AT 19-2-04-00-007', NULL, NULL, NULL, 'PCS', 350, 350, 'company-13', NULL, 'Corner Cleat 8.9 x 12 mm       ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:27', '0'),
+(261, 'AT 19-2-04-50-001', NULL, NULL, NULL, 'PCS', 55, 55, 'company-13', NULL, 'CORNER CLEAT 14.8 x 28.5mm     ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:27', '0'),
+(262, 'AT 19-2-04-50-002', NULL, NULL, NULL, 'PCS', 93, 93, 'company-13', NULL, 'CORNER CLEAT 14.4 x 25.2 mm', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:27', '0'),
+(263, 'AT 19-2-04-52-001', NULL, NULL, NULL, 'PCS', 1272, 1272, 'company-13', NULL, 'Corner Cleat 60,2 x 15.7 mm    ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:27', '0'),
+(264, 'AT 19-2-05-00-003', NULL, NULL, NULL, 'PCS', 10746, 10746, 'company-13', NULL, '17.3mm Alignment Clear         ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:27', '0'),
+(265, 'AT 19-2-08-00-001', NULL, NULL, NULL, 'PCS', 54313, 54313, 'company-13', NULL, 'GLAZING SUPPORT                ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:27', '0'),
+(266, 'AT 19-3-12-00-000', NULL, NULL, NULL, 'PCS', 15993, 15993, 'company-13', NULL, 'Fly Screen Roller              ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:27', '0'),
+(267, 'AT 20-3-11-00-006', NULL, NULL, NULL, 'PCS', 9, 9, 'company-13', 'Gasket', 'DOOR LOCK 35MM W/ROLLER        ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:27', '0'),
+(268, 'AT 21-1-01-50-000', NULL, NULL, NULL, '  mtr   ', 30318, 30318, 'company-13', 'Gasket', 'EPDM Umbrella Gasket           ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:27', '0');
+INSERT INTO `stock_manage` (`id`, `alupco_code`, `alupco_group_code`, `supplier_code`, `supplier_group_code`, `unit`, `total_quantity`, `partial_quantity`, `company_name`, `item_name`, `item_description`, `item_location`, `item_color`, `item_net_weight_in_kg`, `item_gross_weight_in_kg`, `per_box_quantity`, `number_of_role_or_box`, `quantity_of_role_or_box`, `date`, `item_submittion_status`) VALUES
+(269, 'AT 21-1-01-74-002', NULL, NULL, NULL, '  mtr   ', 703, 703, 'company-13', NULL, 'Cover profile EPDM Gasket      ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:27', '0'),
+(270, 'AT 23-3-12-52-000', NULL, NULL, NULL, 'pcs', 1046, 1046, 'company-13', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:27', '0'),
+(271, 'AT 23-3-12-52-001', NULL, NULL, NULL, 'pcs', 3106, 3106, 'company-13', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:27', '0'),
+(272, 'AT 608-8-5 CAP', NULL, NULL, NULL, 'PCS', 45000, 45000, 'company-13', NULL, 'SCREW COVER                    ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:27', '0'),
+(273, 'AT 620036C', NULL, NULL, NULL, 'PCS', 17148, 17148, 'company-13', NULL, 'SCREW 4.8X19', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:27', '0'),
+(274, 'AT 621017C', NULL, NULL, NULL, 'PCS', 301600, 301600, 'company-13', NULL, 'CF. AUTOF.TSP 3.9X16 UNI EN IS', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:27', '0'),
+(275, 'AT 700105', NULL, NULL, NULL, 'PCS', 75, 75, 'company-13', NULL, 'CORNER JOINT                   ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:28', '0'),
+(276, 'AT 700132', NULL, NULL, NULL, 'PCS', 83, 83, 'company-13', NULL, 'SUPPORT PLATE FOR TRANSOM      ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:28', '0'),
+(277, 'AT 700354', NULL, NULL, NULL, 'PCS', 40, 40, 'company-13', NULL, 'COUPLE OF BOTTOM SEALING PLUG  ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:28', '0'),
+(278, 'AT 700356', NULL, NULL, NULL, 'PCS', 26, 26, 'company-13', NULL, 'COUPLE OF UPPER SEALING PLUG   ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:28', '0'),
+(279, 'AT 700371', NULL, NULL, NULL, 'PCS', 16, 16, 'company-13', NULL, 'RECEIVER PLATE 62TT', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:28', '0'),
+(280, 'AT 700048', NULL, NULL, NULL, 'PCS', 73, 73, 'company-13', NULL, 'EXTERNAL CORNER JOINT', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:28', '0'),
+(281, 'AT 701300G', NULL, NULL, NULL, 'PCS', 29, 29, 'company-13', NULL, '2 WINGS HINGES DOORS 76 MF', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:28', '0'),
+(282, 'AT 701382', NULL, NULL, NULL, 'PCS', 89, 89, 'company-13', NULL, 'KIT FOR FIXING HINGES TWO TT', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:28', '0'),
+(283, 'AT 703047', NULL, NULL, NULL, 'PCS', 15, 15, 'company-13', NULL, 'WASHER FOR PRESSURE PLATE      ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:28', '0'),
+(284, 'AT 704030', NULL, NULL, NULL, 'PCS', 1000, 1000, 'company-13', NULL, 'TIGHTNESS CROSS PLUG FOR PRESS ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:28', '0'),
+(285, 'AT 708900', NULL, NULL, NULL, 'PCS', 199, 199, 'company-13', NULL, 'VULCANISED JOINT FOR 9941 GASK', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:28', '0'),
+(286, 'AT 712150', NULL, NULL, NULL, 'PCS', 2710, 2710, 'company-13', NULL, '809455 CENTRAL GASKET VULCANIZ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:28', '0'),
+(287, 'AT 716010H MOD', NULL, NULL, NULL, 'PCS', 1589, 1589, 'company-13', NULL, 'ONE WING WINDOW LOCKING DEVICE', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:28', '0'),
+(288, 'AT 790230A', NULL, NULL, NULL, 'PCS', 83, 83, 'company-13', NULL, 'REINFORCED PLATE 45DS', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:28', '0'),
+(289, 'AT 790913', NULL, NULL, NULL, 'PCS', 2025, 2025, 'company-13', NULL, 'PIN L=124 FOR DOUBLE DOOR HAND', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:28', '0'),
+(290, 'AT 790389', NULL, NULL, NULL, 'PCS', 19, 19, 'company-13', NULL, 'DOOR SHOOT BOLT                ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:28', '0'),
+(291, 'AT 790642', NULL, NULL, NULL, 'PCS', 17, 17, 'company-13', NULL, 'LOCK CYLINDER FOR 62 TTES', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:28', '0'),
+(292, 'AT 790225', NULL, NULL, NULL, 'PCS', 199, 199, 'company-13', NULL, 'INTERNAL CALKING CORNER', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:28', '0'),
+(293, 'AT 79M000', NULL, NULL, NULL, 'PCS', 250, 250, 'company-13', NULL, 'TWO SHUTTER SLIDING KIT', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:28', '0'),
+(294, 'AT 79M001', NULL, NULL, NULL, 'PCS', 0, 0, 'company-13', NULL, 'DRAINAGE PLUG WITH VALVE       ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:28', '0'),
+(295, 'AT 79M002', NULL, NULL, NULL, 'PCS', 38452, 38452, 'company-13', NULL, 'DRAINAGE WITHOUT VALVE', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:28', '0'),
+(296, 'AT 79M003', NULL, NULL, NULL, 'PCS', 37, 37, 'company-13', 'Gasket', 'ADDITIONAL SLIDING KIT 3 SHUTT', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:28', '0'),
+(297, 'AT 809921', NULL, NULL, NULL, 'mtr', 402, 402, 'company-13', 'Gasket', 'INTERNAL GLASS GASKET          ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:28', '0'),
+(298, 'AT 809928', NULL, NULL, NULL, 'mtr', 450, 450, 'company-13', 'Gasket', 'OVERLAP GASKET                 ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:28', '0'),
+(299, 'AT 809941', NULL, NULL, NULL, 'mtr', 552, 552, 'company-13', 'Gasket', 'EXTERNAL GLASS GASKET          ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:28', '0'),
+(300, 'AT 809455', NULL, NULL, NULL, 'mtr', 600, 600, 'company-13', NULL, 'CENTRAL GASKET 50IW', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:28', '0'),
+(301, 'AT 809606L4500', NULL, NULL, NULL, 'mtr', 8977, 8977, 'company-13', NULL, 'EXTERNAL FRMAE PVC-LENGTH 4.5M', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:28', '0'),
+(302, 'AT CCLSD001 - FS', NULL, NULL, NULL, 'PCS', 49999, 49999, 'company-13', NULL, 'ROLLER                         ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:29', '0'),
+(303, 'AT CL16', NULL, NULL, NULL, 'PCS', 74437, 74437, 'company-13', NULL, 'SLIDING ROLLER', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:29', '0'),
+(304, 'AT FK-A', NULL, NULL, NULL, 'PCS', 17642, 17642, 'company-13', NULL, 'SHOCK ABSORBER-ANTI-STRIKE BLO ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:29', '0'),
+(305, 'AT FRS-FLY SCREEN WH', NULL, NULL, NULL, 'PCS', 1270, 1270, 'company-13', NULL, 'FLY SCREEN ROLLER              ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:29', '0'),
+(306, 'AT FSG-01', NULL, NULL, NULL, 'PCS', 22097, 22097, 'company-13', NULL, 'DRAINAGE PLUG                  ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:29', '0'),
+(307, 'AT M6 NUT-258', NULL, NULL, NULL, 'PCS', 43630, 43630, 'company-13', NULL, 'HEX NUT BLACK                  ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:29', '0'),
+(308, 'AT PB-58-700-4P', NULL, NULL, NULL, 'mtr', 98800, 98800, 'company-13', NULL, 'FLYSCREEN BRUSH                ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:29', '0'),
+(309, 'AT PB-58-750-HF', NULL, NULL, NULL, 'mtr', 108200, 108200, 'company-13', NULL, 'SHUTTER BRUSH                  ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:29', '0'),
+(310, 'AT PVC ADAPTOR', NULL, NULL, NULL, 'mtr', 4889, 4889, 'company-13', NULL, 'PVC ADAPTOR CUT LENGTH (431)   ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:29', '0'),
+(311, 'AT RIVET', NULL, NULL, NULL, 'PCS', 296, 296, 'company-13', 'Gasket', 'Aluminum Blind Rivet, 4mm x 16 ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:29', '0'),
+(312, 'AT S032004E', NULL, NULL, NULL, 'mtr', 2000, 2000, 'company-13', NULL, 'EXTERNAL GASKET                ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:29', '0'),
+(313, 'AT SBAR-GRA36 10-25X', NULL, NULL, NULL, '  bar   ', 130, 130, 'company-13', NULL, '6M STEEL FLAT BAR MS           ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:29', '0'),
+(314, 'AT SBQ10', NULL, NULL, NULL, 'PCS', 13433, 13433, 'company-13', NULL, 'FINGER CATCH                   ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:29', '0'),
+(315, 'AT SS601 CHAMPAGNE', NULL, NULL, NULL, '  tb    ', 13455, 13455, 'company-13', NULL, 'WEATHER SEALANT ( 8490 )       ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:29', '0'),
+(316, 'AT SS601-BLACK', NULL, NULL, NULL, '  tb    ', 23097, 23097, 'company-13', NULL, 'Construction & Glazing Silicon', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:29', '0'),
+(317, 'AT SS621-B BLACK', NULL, NULL, NULL, 'tb', 12905, 12905, 'company-13', NULL, 'High performance Structural', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:29', '0'),
+(318, 'AT SS850-WHITE', NULL, NULL, NULL, 'tb', 1035, 1035, 'company-13', NULL, 'NUETRAL SILICONE SEALANT', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:29', '0'),
+(319, 'AT SS850-CHAMPAGNE', NULL, NULL, NULL, 'tb', 1256, 1256, 'company-13', NULL, 'NUETRAL SILICONE SEALANT(8490)', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:29', '0'),
+(320, 'AT SS528', NULL, NULL, NULL, 'kit', 96, 96, 'company-13', NULL, 'Insulating Glass Structural si', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:29', '0'),
+(321, 'AT SS628', NULL, NULL, NULL, 'kit', 3, 3, 'company-13', NULL, 'Two Parts silicone Structural', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:29', '0'),
+(322, 'AT TLK23', NULL, NULL, NULL, 'PCS', 54911, 54911, 'company-13', NULL, 'CATCH LOCK                     ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:29', '0'),
+(323, 'AT TLS09', NULL, NULL, NULL, 'PCS', 54714, 54714, 'company-13', NULL, 'SLIDING LOCK                   ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:29', '0'),
+(324, 'AT TSS 8X80 SCREW AN', NULL, NULL, NULL, 'PCS', 51574, 51574, 'company-13', NULL, 'Window fixing screen M8x80     ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:29', '0'),
+(325, 'AT UNI MULTI FOAM B1', NULL, NULL, NULL, 'PCS', 0, 0, 'company-13', NULL, 'POLYURETHANE FOAM (PU) 750 ML  ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:29', '0'),
+(326, 'AT ZC PLATED M8X80 S', NULL, NULL, NULL, 'PCS', 324000, 324000, 'company-13', NULL, 'Window fixing screen M8x80     ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:30', '0'),
+(327, 'AT-BCR-10 MM', NULL, NULL, NULL, 'mtr', 90400, 90400, 'company-13', 'Gasket', 'Backing Rod 10 mm              ', '  ', NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:30', '0'),
+(328, 'AT 237 583', NULL, NULL, NULL, 'mtr', 15400, 15400, 'company-13', 'Gasket', 'Pressure Plate Gasket', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:30', '0'),
+(329, 'AT A015002P', NULL, NULL, NULL, 'mtr', 133000, 133000, 'company-13', 'Gasket', 'Flay Screen Gasket', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:30', '0'),
+(330, 'AT 235 546', NULL, NULL, NULL, 'mtr', 32700, 32700, 'company-13', NULL, 'Mullion Gasket 8mm', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:30', '0'),
+(331, 'AT-MUR-ICP-001', NULL, NULL, NULL, 'PCS', 77546, 77546, 'company-13', 'Gasket', 'INSTALLATION COVER             ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:30', '0'),
+(332, 'AT-S032004E', NULL, NULL, NULL, 'mtr', 8392, 8392, 'company-13', NULL, 'EXTERNAL GASKET                ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:30', '0'),
+(333, 'AT-SPR-SLD-76-001', NULL, NULL, NULL, 'PCS', 0, 0, 'company-13', NULL, 'Spring Button Corner Joint     ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:30', '0'),
+(334, 'SPA-101', NULL, NULL, NULL, 'PCS', 47775, 47775, 'company-13', NULL, 'PE 1.5 [mm] Mullion            ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:30', '0'),
+(335, 'SPA-102', NULL, NULL, NULL, 'PCS', 48547, 48547, 'company-13', 'Gasket', 'PE 3.0 [mm] Mullion Bracket Sh ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:30', '0'),
+(336, 'AT N001070E', NULL, NULL, NULL, 'mtr', 1500, 1500, 'company-13', 'Gasket', 'Glazing Gasket 2.5 mm', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:30', '0'),
+(337, 'AT N001086E', NULL, NULL, NULL, 'mtr', 500, 500, 'company-13', 'Gasket', 'Sash Tightening Gasket 03', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:30', '0'),
+(338, 'AT R005005E', NULL, NULL, NULL, 'mtr', 400, 400, 'company-13', 'Gasket', 'Glazing Gasket 2.5 mm', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:30', '0'),
+(339, 'AT R005006E', NULL, NULL, NULL, 'mtr', 300, 300, 'company-13', 'Gasket', 'Glazing Gasket 3.0 mm', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:30', '0'),
+(340, 'AT 50SG01', NULL, NULL, NULL, 'mtr', 6250, 6250, 'company-13', 'Gasket', 'FRAME COVER GASKET', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:30', '0'),
+(341, 'AT 235 578', NULL, NULL, NULL, 'mtr', 4397, 4397, 'company-13', 'Gasket', 'CENTRAL GASKET', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:30', '0'),
+(342, 'AT 235 547', NULL, NULL, NULL, 'mtr', 5788, 5788, 'company-13', 'Gasket', 'Mullion Gasket 10mm', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:30', '0'),
+(343, 'AT A064093E', NULL, NULL, NULL, 'mtr', 8900, 8900, 'company-13', 'Gasket', 'FRAME ADAPTOR GASKET-CENTRAL   ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:30', '0'),
+(344, 'AT R005004E', NULL, NULL, NULL, 'mtr', 25800, 25800, 'company-13', 'Gasket', 'Glazing Gasket 1.8 mm          ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:30', '0'),
+(345, 'AT N001068E', NULL, NULL, NULL, 'mtr', 3000, 3000, 'company-13', 'Gasket', 'LOCKING LABYRINTH FOR 123 SYST', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:30', '0'),
+(346, 'AT 235 574', NULL, NULL, NULL, 'mtr', 5400, 5400, 'company-13', 'Gasket', 'SHUTTER GASKET', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:30', '0'),
+(347, 'AT R005010E', NULL, NULL, NULL, 'mtr', 1250, 1250, 'company-13', 'Gasket', 'INTERNAL GASKET', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:30', '0'),
+(348, 'AT 235576', NULL, NULL, NULL, 'mtr', 2000, 2000, 'company-13', 'Gasket', 'BUBBLE GASKET', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:30', '0'),
+(349, 'AT M002007E', NULL, NULL, NULL, 'mtr', 151850, 151850, 'company-13', 'Gasket', 'FLY SCREEN GASKET', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:30', '0'),
+(350, 'AT D011001E', NULL, NULL, NULL, 'mtr', 900, 900, 'company-13', NULL, 'EXTERNAL FRAME GASKET          ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:30', '0'),
+(351, 'AT R001054P', NULL, NULL, NULL, 'mtr', 900, 900, 'company-13', 'Gasket', 'Interlock Rubber HIBP-1072', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:30', '0'),
+(352, 'AT A064081E', NULL, NULL, NULL, 'mtr', 5750, 5750, 'company-13', 'Gasket', 'EXTERNAL GASKET', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:30', '0'),
+(353, 'AT A064088E', NULL, NULL, NULL, 'mtr', 2000, 2000, 'company-13', 'Gasket', 'TIGHTENING GASKET 04', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:30', '0'),
+(354, 'AT A064008E', NULL, NULL, NULL, 'mtr', 500, 500, 'company-13', 'Gasket', 'EPDM: FS 4.5 (A015002P)', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:30', '0'),
+(355, 'AT R014020E', NULL, NULL, NULL, 'mtr', 990, 990, 'company-13', 'Gasket', 'TEACHNICAL SEAL', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:30', '0'),
+(356, 'AT A064037E', NULL, NULL, NULL, 'mtr', 900, 900, 'company-13', NULL, 'A - Impact Gasket Big  (D01100', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:30', '0'),
+(357, 'AT-THRO-BOLT-M12', NULL, NULL, NULL, 'PCS', 10, 10, 'company-13', NULL, 'THROGH BOLT  M12 x 110 Hex HD', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:30', '0'),
+(358, 'AT 711105H', NULL, NULL, NULL, 'pk', 308, 308, 'company-13', NULL, '2-WINGS HINGE ADJUSTABLE IW PA', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:30', '0'),
+(359, 'AT A18011', NULL, NULL, NULL, 'pcs', 20, 20, 'company-13', NULL, 'STACK', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:30', '0'),
+(360, 'AT 0503083', NULL, NULL, NULL, 'pcs', 1000, 1000, 'company-13', NULL, 'STACK', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:30', '0'),
+(361, 'AT 12109050', NULL, NULL, NULL, 'mtr', 720, 720, 'company-13', NULL, 'AD56-1000-30P-Black Brush', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:31', '0'),
+(362, 'AT 220116-RUBBER-70M SAMLEX', NULL, NULL, NULL, '  rl    ', 335, 335, 'company-13', NULL, 'PROTECTION RUBBER              ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:31', '0'),
+(363, 'AT 235 563', NULL, NULL, NULL, 'mtr', 5000, 5000, 'company-13', NULL, 'GLAZING GASKET3.5 EPDM RUBBER PROFILE-HIBP1275/27', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-05 16:58:31', '0');
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `get_company_name`
+--
+ALTER TABLE `get_company_name`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `get_item_name`
+--
+ALTER TABLE `get_item_name`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `make_order`
+--
+ALTER TABLE `make_order`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `sales_history`
+--
+ALTER TABLE `sales_history`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `stock_inventory`
+--
+ALTER TABLE `stock_inventory`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `stock_manage`
+--
+ALTER TABLE `stock_manage`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `get_item_name`
+--
+ALTER TABLE `get_item_name`
+  MODIFY `id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `stock_manage`
+--
+ALTER TABLE `stock_manage`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=364;
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
