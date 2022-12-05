@@ -60,7 +60,7 @@
             <section id="update_item_container" class="container d-none my-3">
                 <?php
                 if( is_user_logged_in() ){
-                    require_once __DIR__ . '/templates/update-item.php'; 
+                    require_once __DIR__ . '/templates/edit-stock-item.php'; 
                 }
               
                 ?>

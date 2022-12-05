@@ -66,71 +66,69 @@ function showItem( data ){
         parant = document.createElement("section");
         parant.setAttribute( "class", "my-3 p-2 border" );
 
-        if ( items[i].item_name != ' ' ) {
+        if ( items[i].item_name != null && items[i].item_name != ' ' ) {
             text = `<span class="title">Item Name: </span>`+items[i].item_name+`</br>`;
         }else{
             text = ' ';
         }
 
         // Alupco code
-        if ( items[i].alupco_code != ' ' ) {
+        if ( items[i].alupco_code != null && items[i].alupco_code != ' ' ) {
             text += `<span class="title">Alupco code: </span>`+items[i].alupco_code+`</br>`;
         }
         
 
-        if( items[i].alupco_group_code != ' ' ){
+        if( items[i].alupco_group_code != null && items[i].alupco_group_code != ' ' ){
             text += `<span class="title">Alupco group code: </span>`+items[i].alupco_group_code+`</br>`;
         }
 
 
-        if ( items[i].total_quantity != ' ' ) {
+        if ( items[i].total_quantity != null && items[i].total_quantity != ' ' ) {
             text += `<span class="title">Total Quantity: </span>`+items[i].total_quantity+`</br>`;
         }
 
-        if ( items[i].unit != ' ' ) {
+        if ( items[i].unit != null && items[i].unit != ' ' ) {
             text += `<span class="title">Unit: </span>`+items[i].unit+`</br>`;
         }
         
 
-
-
-        if ( items[i].per_box_quantity != ' ' ) {
+        if ( items[i].per_box_quantity != null && items[i].per_box_quantity != ' ' ) {
             text += `<span class="title">Per Box Quantity: </span>`+items[i].per_box_quantity+`</br>`;
         }
         
-        if ( items[i].number_of_role_or_box != ' ' ) {
+        if ( items[i].number_of_role_or_box != null && items[i].number_of_role_or_box != ' ' ) {
             text += `<span class="title">Number of role or box: </span>`+items[i].number_of_role_or_box+`</br>`;
         }
 
-        if ( items[i].quantity_of_role_or_box != ' ' ) {
+        if (items[i].number_of_role_or_box != null && items[i].number_of_role_or_box != ' ') {
             text += `<span class="title">Quantity of role or box: </span>`+items[i].quantity_of_role_or_box+`</br>`;
         }
 
-        if ( items[i].item_color != ' ' ) {
+        if ( items[i].item_color != null && items[i].item_color != ' ' ) {
             text += `<span class="title">Color: </span>`+items[i].item_color+`</br>`;
         }
 
-        if ( items[i].item_net_weight_in_kg != ' ' ) {
+        if ( items[i].item_net_weight_in_kg != null && items[i].item_net_weight_in_kg != ' ' ) {
             text += `<span class="title">Net weight: </span>`+items[i].item_net_weight_in_kg+`</br>`;
         }
 
-        if ( items[i].item_gross_weight_in_kg != ' ' ) {
+        if ( items[i].item_gross_weight_in_kg != null && items[i].item_gross_weight_in_kg != ' ' ) {
             text += `<span class="title">Gross Weight: </span>`+items[i].item_gross_weight_in_kg+`</br>`;
         }
         
-        if ( items[i].company_name != ' ' ) {
+        if (  items[i].company_name != null && items[i].company_name != ' ' ) {
             text += `<span class="title">WH/Hourse: </span>`+items[i].company_name+`</br>`;
         }
         
-        if( items[i].supplier_code != ' ' ){
+        if(  items[i].supplier_code != null && items[i].supplier_code != ' ' ){
             text += `<span class="title">Supplier code: </span>`+items[i].supplier_code+`</br>`;
         }
 
-        if( items[i].supplier_group_code != ' ' ){
+        if( items[i].supplier_group_code != null && items[i].supplier_group_code != ' ' ){
             text += `<span class="title">Supplier group code: </span>`+items[i].supplier_group_code+`</br>`;
         }
 
-        if ( items[i].item_location != ' ' ) {
+        if ( items[i].item_location != null && items[i].item_location != ' ' ) {
             text += `<span class="title">Item-Location: </span>`+items[i].item_location+`</br>`;
         }
         

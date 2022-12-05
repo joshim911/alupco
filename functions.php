@@ -12,7 +12,7 @@ global $wpdb;
         wp_enqueue_script('fun', get_template_directory_uri() . '/assets/js/fun.js', array('jquery'), microtime(), true);
         
         wp_enqueue_script('get-item', get_template_directory_uri() . '/assets/js/search-item.js', array('jquery'), microtime(), true);
-        wp_enqueue_script('editt-item', get_template_directory_uri() . '/assets/js/edit-item.js', array('jquery'), microtime(), true);
+        wp_enqueue_script('editt-item', get_template_directory_uri() . '/assets/js/edit-stock-item.js', array('jquery'), microtime(), true);
         wp_enqueue_script('make-order', get_template_directory_uri() . '/assets/js/make-order.js', array('jquery'), microtime(), true);
         wp_enqueue_script('newfun', get_template_directory_uri() . '/assets/js/newfun.js', array('jquery'), microtime(), true);
 
@@ -34,18 +34,18 @@ global $wpdb;
 
     require_once  __DIR__ . '/inc/inc.php';
     
-    require_once  __DIR__ . '/inc/import-data.php';
+    // require_once  __DIR__ . '/inc/import-data.php';
     
-    require_once __DIR__ . '/fun.php';
+    // require_once __DIR__ . '/fun.php';
 
 
 
 
 
-    require_once __DIR__ . '/inc/item-edit.php';
-    require_once __DIR__ . '/inc/uncompleted-items.php';
-    require_once __DIR__ . '/inc/get-item-and-wharehouse-name.php';
-    require_once __DIR__ . '/inc/make-order.php';
+    // require_once __DIR__ . '/inc/item-edit.php';
+    // require_once __DIR__ . '/inc/uncompleted-items.php';
+    // require_once __DIR__ . '/inc/get-item-and-wharehouse-name.php';
+    // require_once __DIR__ . '/inc/make-order.php';
 
     
     add_action( 'get_wharehouse_name', 'get_wharehouse_name' );

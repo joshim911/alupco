@@ -17,11 +17,15 @@ add_action( 'wp_ajax_nopriv_get_items', 'searchItem');
       $query = "select * from stock_manage where company_name='{$wh_house}'";
     }
     
+    if( ! empty($_REQUEST['item_name']) && ! empty($_REQUEST['company'])){
+      $itemName = $_REQUEST['item_name']; $wh_house = $_REQUEST['company'];
+      $query = "select * from stock_manage where ( item_name ='{$itemName}' and company_name='{$wh_house}' )";
+    }
     
     if( ! empty($_REQUEST['alp_code']) && ! empty($_REQUEST['company'])){
       $alpcode = $_REQUEST['alp_code']; $wh_house = $_REQUEST['company'];
       $query = "select * from stock_manage where ( alupco_code='{$alpcode}' and company_name='{$wh_house}' )";
-    } 
+    }
 
     $result = $wpdb->get_results($query);
     

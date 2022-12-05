@@ -24,42 +24,85 @@ function submitStockSheet (){
   // $item = $row['A']; => item code 
   // $description = $row['B']  => item description
   // $unit = $row['C'] =>  item unit
-  // $totalStock = $row['H'] => item Total quantity
+  // $totalStock = $row['D'] => Total quantity
+  // $totalStock = $row['E'] => Companry Name
+  // $totalStock = $row['F'] => item Name
+  // $totalStock = $row['G'] => Location
+  // $totalStock = $row['H'] => Supplier code
+  // $totalStock = $row['I'] => Per Box Quantity
 
-  global $wpdb; 
+
+  global $wpdb;  $message = []; $item = [];
 
   foreach( $rows as $index => $row ){
     
-    $itemCode = $row['A']; $itemDes = $row['B']; $unit = $row['C']; $qty = $row['D']; $company = $row['E'];
-    $location = $row['F'];
+    $itemCode = $row['A'];  $unit = $row['C']; $qty = $row['D']; 
+    
 
     if( $index > 1 ){
 
-        $item = array( 
-          'alupco_code' => $itemCode,
-          'item_description' => $itemDes,
-          'unit' => $unit,
-          'total_quantity' => $qty,
-          'partial_quantity' => $qty,
-          'company_name' => $company,
-          'item_location' => $location,
-          'item_submittion_status' => 1
-        
-        );
+        $item['alupco_code'] = $itemCode;
+        // $item['item_description'] = $itemDes;
+        $item['unit'] = $unit;
+        $item['total_quantity'] = $qty;
+        $item['partial_quantity'] = $qty;
+        // $item['company_name'] = $company;
+        // $item['item_location'] = $location;
+        $item['item_submittion_status'] = 0;
 
-   
-        if( ! $wpdb->get_row( "select * from stock_manage where alupco_code='$itemCode' " ) ){
+        if( ! empty( $row['B'] ) ){
+          $item['item_description'] =  $row['B'];
+        }else{
+          $item['item_description'] =  null;
+        }
+
+        if( ! empty( $row['E'] ) ){
+          $item['company_name'] =  $row['E'];
+        }else{
+          $item['company_name'] =  null;
+        }
+
+        if( ! empty( $row['F'] ) ){
+          $item['item_name'] =  $row['F'];
+        }else{
+          $item['item_name'] =  null;
+        }
+
+        if( ! empty( $row['G'] ) ){
+          $item['item_location'] =  $row['G'];
+        }else{
+          $item['item_location'] =  null;
+        }
+
+        if( ! empty( $row['H'] ) ){
+          $item['supplier_code'] =  $row['H'];
+        }else{
+          $item['supplier_code'] =  null;
+        }
+
+        if( ! empty( $row['I'] ) ){
+          $item['per_box_quantity'] =  $row['I'];
+        }else{
+          $item['per_box_quantity'] =  null;
+        }
+        
+        if( ! $wpdb->get_row( "select * from stock_manage where alupco_code = '$itemCode' " ) ){
           
           if( ! $wpdb->insert('stock_manage' , $item )  ) {
 
-              echo "not submittedd" . "<br>";
+            array_push( $message, "'$itemCode' This item not submittedd" );
           }
+
+        }else{
+          array_push( $message, "'$itemCode' This item already exists" );
 
         }
 
     }
      
   }
+
+    wp_send_json_success($message);
 
 }
 
